@@ -1,0 +1,121 @@
+﻿id,condition,target,sentence,meaningfulness_M,meaningfulness_SD,probability_M,probability_SD,stereotypicality_M,stereotypicality_SD,length,target_stereotypicality,target_sentence_position,target_inflection
+1,stc,eyebrow,His girlfriend plucks her eyebrows once a week.,6.7,0.53,6.27,1.01,5.9,0.86,8,F,5,eyebrows
+2,stc,laundry,This girl does the laundry twice a week.,6.62,0.68,5.93,1.2,5.93,1.03,8,F,5,laundry
+3,stc,flower,She received a beautiful flower from her fiancé.,6.93,0.26,6.2,1.35,5.79,1.15,8,F,5,flower
+4,stc,lipstick,She always uses the lipstick from this company.,6.31,1,6.2,0.96,6.37,0.76,8,F,5,lipstick
+5,stc,skirt,This actress often wears skirts and long dresses.,6.52,0.69,6.1,1.3,5.69,1.34,8,F,5,skirts
+6,stc,butterfly,She dressed up as a butterfly with pink wings.,6.27,1.28,5.45,1.5,6.34,0.94,9,F,6,butterfly
+7,stc,hairspray,Many women tend to overuse hairspray and strong perfume.,6.63,0.61,5.27,1.89,5.38,1.37,9,F,6,hairspray
+8,stc,caretaker,She wants to become a caretaker in the nursery.,6.07,1.44,5.21,1.5,5.1,1.86,9,F,6,caretaker
+9,stc,lullaby,Their middle daughter wrote many lullabies and nursery rhymes.,6.2,1.16,4.41,1.8,5.45,1.72,9,F,6,lullabies
+10,stc,outfit,She has been choosing her outfit for two hours.,6.43,0.86,5.53,1.78,6.27,0.83,9,F,6,outfit
+11,stc,bracelet,Her husband has given her a bracelet with precious stones.,6.66,0.61,5.5,1.48,6.33,0.76,10,F,7,bracelet
+12,stc,dancer,She trained hard to become a dancer of international renown.,6.77,0.5,5.43,1.81,6.17,0.87,10,F,7,dancer
+13,stc,hairstyle,Women care a lot about their hairstyle and perfect make-up.,6.1,1.37,5.43,1.65,5.93,1.19,10,F,7,hairstyle
+14,stc,wardrobe,Girls always need a very large wardrobe for their clothes.,6.41,0.95,4.53,1.61,6.4,0.97,10,F,7,wardrobe
+15,stc,hairdryer,Women cannot imagine travelling without a hairdryer and beauty products.,5.93,1.62,4.23,1.85,5.52,1.55,10,F,7,hairdryer
+16,stc,engine,His father repaired the engine of his car.,6.83,0.47,6.23,1.17,6.14,0.92,8,M,5,engine
+17,stc,hammer,Her husband needed a hammer and some nails.,6.9,0.31,6.4,0.72,6.53,0.57,8,M,5,hammer
+18,stc,moustache,Their son grew a moustache during his unemployment.,6.55,0.78,6.1,1.47,6.38,0.82,8,M,5,moustache
+19,stc,fishing,These boys always go fishing on the weekends.,6.59,0.78,5.63,1.25,6.63,0.56,8,M,5,fishing
+20,stc,rapist,This man is a rapist from New York.,6.62,0.56,4.8,1.67,6.03,1.03,8,M,5,rapist
+21,stc,barbecue,Their uncle is lighting the barbecue with his buddies.,5.83,1.66,5.66,1.26,6,1.63,9,M,6,barbecue
+22,stc,plumber,Her uncle is an experienced plumber with many clients.,6.41,1.3,6.27,0.87,6,1.04,9,M,6,plumber
+23,stc,builder,His nephews were working as builders to earn money.,6.93,0.26,5.8,1.21,5.79,1.15,9,M,6,builders
+24,stc,trousers,Their grandfather was wearing elegant trousers and a tie.,6.72,0.84,6.03,1.33,5.77,1.33,9,M,6,trousers
+25,stc,butcher,This man is an experienced butcher specialising in ham.,6.48,0.63,5.33,1.77,6.14,0.83,9,M,6,butcher
+26,stc,wallet,Men often show off their thick wallet and high-tech gadgets.,5.69,1.65,4.97,1.78,6,1.46,10,M,7,wallet
+27,stc,brick,Her brother spent two months laying bricks at a site.,6.28,1.28,5.97,1.19,6.31,0.71,10,M,7,bricks
+28,stc,inventor,His son was hired as an inventor in this institute.,5.9,1.4,4.93,1.78,5.69,1.04,10,M,7,inventor
+29,stc,offender,Their uncle was considered the main offender in the crime.,6.5,1.17,5.37,1.25,5.77,1.01,10,M,7,offender
+30,stc,toolbox,He is often seen with his toolbox full of screwdrivers.,6.07,1.31,5.72,1.19,5.93,1.39,10,M,7,toolbox
+31,sti,eyebrow,Her boyfriend plucks his eyebrows once a week.,6.52,1.06,4.8,1.67,2.5,1.25,8,F,5,eyebrows
+32,sti,laundry,This boy does the laundry twice a week.,6.86,0.44,5.5,1.78,3,1.46,8,F,5,laundry
+33,sti,flower,He received a beautiful flower from his fiancée.,6.62,0.62,4.97,1.97,2.57,1.38,8,F,5,flower
+34,sti,lipstick,He always uses the lipstick from this company.,6.62,0.68,3.77,1.91,1.34,0.48,8,F,5,lipstick
+35,sti,skirt,This actor often wears skirts and long dresses.,6.6,0.72,4.9,1.77,2,1.23,8,F,5,skirts
+36,sti,butterfly,He dressed up as a butterfly with pink wings.,6.41,0.95,4.21,1.97,2.21,1.68,9,F,6,butterfly
+37,sti,hairspray,Many men tend to overuse hairspray and strong perfume.,6,1.31,2.93,1.86,2.6,1.89,9,F,6,hairspray
+38,sti,caretaker,He wants to become a caretaker in the nursery.,6.48,0.83,4.52,1.74,2.62,1.7,9,F,6,caretaker
+39,sti,lullaby,Their middle son wrote many lullabies and nursery rhymes.,6.31,1.11,4.31,1.83,3.03,1.68,9,F,6,lullabies
+40,sti,outfit,He has been choosing his outfit for two hours.,6.28,1.03,4.57,1.77,1.59,0.57,9,F,6,outfit
+41,sti,bracelet,His wife has given him a bracelet with precious stones.,6.47,1.17,4,2.27,1.9,0.86,10,F,7,bracelet
+42,sti,dancer,He trained hard to become a dancer of international renown.,6.55,1.02,5.43,1.65,2.48,1.15,10,F,7,dancer
+43,sti,hairstyle,Men care a lot about their hairstyle and perfect make-up.,5.97,1.03,2.4,1.57,1.67,0.92,10,F,7,hairstyle
+44,sti,wardrobe,Boys always need a very large wardrobe for their clothes.,6.43,1.19,3.23,1.65,1.86,0.64,10,F,7,wardrobe
+45,sti,hairdryer,Men cannot imagine travelling without a hairdryer and beauty products.,6.13,1.36,3.43,2.14,1.4,0.72,10,F,7,hairdryer
+46,sti,engine,His mother repaired the engine of her car.,6.66,0.55,4.87,1.91,2.07,1.2,8,M,5,engine
+47,sti,hammer,His wife needed a hammer and some nails.,6.72,0.45,5.43,1.5,2.28,0.92,8,M,5,hammer
+48,sti,moustache,Their daughter grew a moustache during her unemployment.,5.37,1.94,2.4,1.92,1.55,0.99,8,M,5,moustache
+49,sti,fishing,These girls always go fishing on the weekends.,6.83,0.47,4.67,1.97,2.14,0.79,8,M,5,fishing
+50,sti,rapist,This woman is a rapist from New York.,6.23,1.19,3.3,2.38,1.76,1.18,8,M,5,rapist
+51,sti,barbecue,Their aunt is lighting the barbecue with her buddies.,6.38,0.78,4.17,1.81,2.76,1.66,9,M,6,barbecue
+52,sti,plumber,Her aunt is an experienced plumber with many clients.,6.7,0.53,4.9,1.67,1.6,0.89,9,M,6,plumber
+53,sti,builder,His nieces were working as builders to earn money.,6.55,0.63,4.3,2.23,1.6,0.86,9,M,6,builders
+54,sti,trousers,Their grandmother was wearing elegant trousers and a tie.,5.97,1.74,3.27,2.12,2,0.85,9,M,6,trousers
+55,sti,butcher,This woman is an experienced butcher specialising in ham.,6.57,0.86,4.53,1.74,2.31,1.04,9,M,6,butcher
+56,sti,wallet,Women often show off their thick wallet and high-tech gadgets.,5.87,1.31,2.48,1.48,2.72,1.83,10,M,7,wallet
+57,sti,brick,Her sister spent two months laying bricks at a site.,6.55,0.99,4.5,2.3,2.07,1.13,10,M,7,bricks
+58,sti,inventor,His daughter was hired as an inventor in this institute.,6.1,1.45,4.93,2.02,2.8,1.42,10,M,7,inventor
+59,sti,offender,Their aunt was considered the main offender in the crime.,6.34,0.94,4.17,1.95,2.24,1.02,10,M,7,offender
+60,sti,toolbox,She is often seen with her toolbox full of screwdrivers.,6.1,1.35,4.48,1.7,2.93,1.16,10,M,7,toolbox
+61,sec,eyebrow,The judges raised their eyebrows hearing his response.,6.66,0.81,5.63,1.94,3.93,0.75,8,F,5,eyebrows
+62,sec,laundry,There is some dirty laundry in the basket.,6.59,0.63,6.67,0.61,4.03,1.1,8,F,5,laundry
+63,sec,flower,There is a yellow flower in the vase.,6.73,0.64,5.93,1.28,4.55,0.95,8,F,5,flower
+64,sec,lipstick,Doctors recommend a protective lipstick during severe winters.,5.24,1.75,4.03,1.94,4.55,1.62,8,F,5,lipstick
+65,sec,skirt,Fashion magazines often present skirts or elegant suits.,6,1.49,5.62,1.54,5.21,1.59,8,F,5,skirts
+66,sec,butterfly,Some caterpillars transform into a butterfly after some time.,5.79,1.42,5.73,2.05,4.45,1.09,9,F,6,butterfly
+67,sec,hairspray,Children hate the smell of hairspray and alcoholic drinks.,6.59,0.82,5.1,1.54,4.03,0.57,9,F,6,hairspray
+68,sec,caretaker,The hospice is recruiting a caretaker with vast experience.,6.23,1.36,5.47,1.25,4.83,1.07,9,F,6,caretaker
+69,sec,lullaby,It is advisable to sing lullabies to newborn babies.,6.86,0.44,5.93,1.57,4.9,1.16,9,F,6,lullabies
+70,sec,outfit,A red carpet requires an outfit from a designer.,5.69,1.75,5.38,1.9,4.76,1.53,9,F,6,outfit
+71,sec,bracelet,The national museum holds a unique bracelet found in Egypt.,6.55,0.74,5.72,1.41,4.52,1.35,10,F,7,bracelet
+72,sec,dancer,This course is aimed at any dancer who needs practice.,6.59,0.73,5.67,1.3,4.76,1.06,10,F,7,dancer
+73,sec,hairstyle,This acting role required a new hairstyle and vocal training.,6.3,1.15,5.31,1.69,4.55,1.15,10,F,7,hairstyle
+74,sec,wardrobe,This apartment has an extremely large wardrobe in the corridor.,5.37,1.75,4.76,1.92,4.07,1.28,10,F,7,wardrobe
+75,sec,hairdryer,The salon has ordered an electric hairdryer from this supplier.,6.24,1.43,5.23,1.99,4.45,0.87,10,F,7,hairdryer
+76,sec,engine,They quickly started the engine and drove away.,6.8,0.41,5.83,1.66,4.52,0.91,8,M,5,engine
+77,sec,hammer,Prehistoric people invented a hammer made of stone.,6.31,1.04,5.21,1.7,4.59,1.3,8,M,5,hammer
+78,sec,moustache,Kids enjoy a sticky moustache and oversized glasses.,5.4,1.63,4.21,2.34,4.07,1.41,8,M,5,moustache
+79,sec,fishing,The local government banned fishing in this lake.,6.5,0.97,5.86,1.16,3.83,1.34,8,M,5,fishing
+80,sec,rapist,Detectives have identified the rapist stalking young girls.,6.76,0.51,6.33,0.92,4.79,1.42,8,M,5,rapist
+81,sec,barbecue,This restaurant serves the best barbecue in this town.,6.53,0.82,6.07,1.36,4.34,0.9,9,M,6,barbecue
+82,sec,plumber,The hotel manager called a plumber and an electrician.,6.79,0.41,5.97,1.45,4.62,0.98,9,M,6,plumber
+83,sec,builder,The pay rise concerned mainly builders and car drivers.,5.73,1.72,4.43,2.22,4.79,1.11,9,M,6,builders
+84,sec,trousers,This fashion magazine presents baggy trousers and leather jackets.,6,1.34,4.9,1.79,4.38,1.4,9,M,6,trousers
+85,sec,butcher,The grocery store is near the butcher around the corner.,5.9,1.63,5.45,1.74,4.14,0.79,10,M,6,the
+86,sec,wallet,A passer-by has found an empty wallet covered in mud.,6.37,1.19,5.23,1.55,4.3,0.75,10,M,7,wallet
+87,sec,brick,The kids joyfully played with Lego bricks all day long.,6.55,0.63,6.3,1.24,4.73,1.17,10,M,7,bricks
+88,sec,inventor,This exhibition is devoted to an inventor from Northern Canada.,6.52,0.74,5.77,1.38,4.34,0.55,10,M,7,inventor
+89,sec,offender,This lawyer is representing a juvenile offender accused of robbery.,6.47,0.94,5.62,1.32,3.86,1.27,10,M,7,offender
+90,sec,toolbox,The store has just sold a toolbox made of wood.,6.23,1.17,4.28,1.69,3.83,1.2,10,M,7,toolbox
+91,sei,eyebrow,Children adore singing patriotic eyebrows during school assemblies.,1.31,0.6,,,,,8,F,5,eyebrows
+92,sei,laundry,The dish needed some laundry and more pepper.,1.7,0.95,,,,,8,F,5,laundry
+93,sei,flower,The poet wrote a flower that amazed everybody.,1.79,1.24,,,,,8,F,5,flower
+94,sei,lipstick,The students wrote a lipstick and a poem.,1.73,1.31,,,,,8,F,5,lipstick
+95,sei,skirt,The couple loves eating skirts and sweet cakes.,2.17,1.69,,,,,8,F,5,skirts
+96,sei,butterfly,This novel is the best butterfly of previous weeks.,1.24,0.51,,,,,9,F,6,butterfly
+97,sei,hairspray,The nobles respect the elected hairspray and remain loyal.,1.45,0.91,,,,,9,F,6,hairspray
+98,sei,caretaker,The kids baked a delicious caretaker without any sugar.,1.62,0.98,,,,,9,F,6,caretaker
+99,sei,lullaby,The friends have drunk some lullabies at the party.,1.79,1.32,,,,,9,F,6,lullabies
+100,sei,outfit,The president summoned a monthly outfit a week earlier.,2.38,1.47,,,,,9,F,6,outfit
+101,sei,bracelet,The dessert was prepared by a bracelet specialising in cheesecakes.,1.48,0.63,,,,,10,F,7,bracelet
+102,sei,dancer,They opened the door of the dancer and went inside.,2.1,1.65,,,,,10,F,7,dancer
+103,sei,hairstyle,Yesterday this TV series won a hairstyle at the gala.,2,1.56,,,,,10,F,7,hairstyle
+104,sei,wardrobe,The operation was conducted by a wardrobe and an anaesthesiologist.,1.66,0.77,,,,,10,F,7,wardrobe
+105,sei,hairdryer,This piece of clothing is a hairdryer made from silk.,1.69,0.66,,,,,10,F,7,hairdryer
+106,sei,engine,The teenagers ate an engine with some potatoes.,1.55,0.74,,,,,8,M,5,engine
+107,sei,hammer,Many students failed their hammer despite working hard.,1.55,0.69,,,,,8,M,5,hammer
+108,sei,moustache,Astronauts travel in a moustache and space shuttles.,1.62,0.82,,,,,8,M,5,moustache
+109,sei,fishing,Making good coffee requires fishing and good roasting.,2.17,1.42,,,,,8,M,5,fishing
+110,sei,rapist,The inventors patented their rapist in this country.,1.38,0.56,,,,,8,M,5,rapist
+111,sei,barbecue,It is addressed to a barbecue living next door.,1.72,1.1,,,,,9,M,6,barbecue
+112,sei,plumber,The bride walked down the plumber and fell down.,1.52,0.74,,,,,9,M,6,plumber
+113,sei,builder,These fish live in deep builders and eat plants.,1.69,0.81,,,,,9,M,6,builders
+114,sei,trousers,Last week they planted some trousers and fruit trees.,1.66,0.86,,,,,9,M,6,trousers
+115,sei,butcher,Pizza dough includes a fresh butcher and some salt.,1.62,0.56,,,,,9,M,6,butcher
+116,sei,wallet,For dinner they prepared a tasty wallet and a salad.,1.52,0.78,,,,,10,M,7,wallet
+117,sei,brick,The director held a meeting with bricks working in finances.,1.9,1.45,,,,,10,M,7,bricks
+118,sei,inventor,The students wrote a lengthy argumentative inventor in two hours.,1.8,1.32,,,,,10,M,7,inventor
+119,sei,offender,The teenager took up a new offender to keep fit.,1.55,0.78,,,,,10,M,7,offender
+120,sei,toolbox,The holidaymakers were sunbathing at the toolbox in southern France.,1.59,0.87,,,,,10,M,7,toolbox

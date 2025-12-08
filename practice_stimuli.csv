@@ -1,0 +1,9 @@
+﻿sentence,condition,correct_answer,gender
+Sweter wykonano z wełny z domieszką jedwabiu.,sec,meaningful,F
+Do wymiany opony używali zawsze koronki i profesjonalnego lewarka.,sei,not_meaningful,F
+W publicznej łazience ktoś zostawił grzebień i mokry ręcznik.,sec,meaningful,F
+Dziecko złamało sobie grzywnę podczas niebezpiecznej zabawy.,sei,not_meaningful,M
+Przed wejściem należy bezwzględnie zdezynfekować żurawia oraz założyć maseczkę.,sei,not_meaningful,M
+W zeszłym sezonie modne były spódnice o szerokim kroju.,sec,meaningful,F
+Każdego lata komary często atakują koszykówkę w pobliżu jeziora.,sei,not_meaningful,M
+Spinki do mankietów leżały przy krawacie na drewnianej komodzie.,sec,meaningful,M

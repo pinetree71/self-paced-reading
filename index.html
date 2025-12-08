@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Self-paced reading — hosted</title>
+  <style>
+    body{background:#000;color:#fff;font-family:Helvetica,Arial,sans-serif;margin:0;height:100vh;display:flex;align-items:center;justify-content:center}
+    #screen{max-width:1000px;padding:24px;text-align:center}
+    .big{font-size:36px;line-height:1.4}
+    .word{font-size:48px;margin:40px 0}
+    .instr{font-size:20px}
+    .hidden{display:none}
+    .fix{font-size:48px}
+    #progress{font-size:14px;color:#ccc}
+    button{font-size:18px;padding:10px 14px;margin:8px}
+  </style>
+</head>
+<body>
+  <div id="screen">
+    <div id="setup" class="big">
+      <div class="instr">Self-paced reading experiment (web version)</div>
+      <div style="margin-top:18px;text-align:left">
+        <label>Participant ID (optional): <input id="participant" type="text"></label><br>
+        <label>Language order: 
+          <select id="language_order">
+            <option value="PL_first">PL first</option>
+            <option value="ENG_first">ENG first</option>
+          </select>
+        </label><br>
+        <label>Key mapping:
+          <select id="key_mapping">
+            <option value="F_yes_J_no">F = YES / J = NO</option>
+            <option value="J_yes_F_no">J = YES / F = NO</option>
+          </select>
+        </label>
+      </div>
+      <div style="margin-top:18px">Make sure the CSV files <code>practice_stimuli.csv</code>, <code>stimuli_eng.csv</code> and <code>stimuli_pl.csv</code> are in the same folder as this HTML file on GitHub Pages.</div>
+      <div style="margin-top:18px"><button id="startBtn">Start (load stimuli)</button></div>
+      <div id="status" style="margin-top:12px;color:#ccc"></div>
+    </div>
+
+    <div id="instrPages" class="hidden">
+      <div id="instrText" class="instr"></div>
+      <div style="margin-top:18px"><button id="instrNext">Continue</button></div>
+    </div>
+
+    <div id="trialScreen" class="hidden">
+      <div id="progress"></div>
+      <div id="fixation" class="fix hidden">+</div>
+      <div id="word" class="word"></div>
+    </div>
+
+    <div id="judgment" class="hidden">
+      <div class="big">Was the sentence meaningful?</div>
+      <div class="instr" style="margin-top:14px"><span id="leftKey"></span> &nbsp;&nbsp;&nbsp; <span id="rightKey"></span></div>
+      <div style="margin-top:18px"><button id="leftBtn">Left</button><button id="rightBtn">Right</button></div>
+    </div>
+
+    <div id="endScreen" class="hidden big">
+      Thank you! Experiment finished.
+      <div style="margin-top:12px"><button id="downloadBtn">Download data (CSV)</button></div>
+    </div>
+  </div>
+
+<script>
+/*
+  Web implementation of the self-paced reading task. Key features:
+    - Loads CSVs from local files in same folder
+    - Presents sentences non-cumulatively, word-by-word
+    - Records per-word RTs (from word onset) and judgment RT
+    - Splits PL/ENG into two blocks each preserving adjacency across whole sequence
+    - Avoids consecutive trials with same 'target' where possible (greedy + shuffle)
+    - Saves results in-memory; posts to an external endpoint (Google Apps Script) if configured
+
+  IMPORTANT:
+    - For accurate timing, run this on a modern browser and avoid background tabs.
+    - Place the 3 CSV files next to this HTML on GitHub Pages.
+*/
+
+// -------------------- Utility: simple CSV parser --------------------
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  const header = lines[0].split(/,\s*/).map(h => h.replace(/^\uFEFF/, '').trim());
+  const rows = lines.slice(1).map(line => {
+    // naive split—this assumes no commas embedded in fields; if you have such fields, use PapaParse
+    const cols = line.split(/,\s*/);
+    const obj = {};
+    header.forEach((h,i)=> obj[h]= (i<cols.length? cols[i].trim() : ''));
+    return obj;
+  });
+  return rows;
+}
+
+// -------------------- Data and config --------------------
+let participant = '';
+let language_order = 'PL_first';
+let key_mapping = 'F_yes_J_no';
+let yes_key='f', no_key='j';
+let left_desc = '', right_desc = '';
+
+let stimuliPL=[], stimuliENG=[], practiceStimuli=[];
+let blockOrder=[];
+let results=[]; // one row per word
+
+const statusEl = document.getElementById('status');
+const startBtn = document.getElementById('startBtn');
+
+// -------------------- Load CSV files via fetch --------------------
+async function loadCSVfile(fname){
+  const res = await fetch(fname);
+  if(!res.ok) throw new Error('Cannot load '+fname+' (HTTP '+res.status+')');
+  const txt = await res.text();
+  return parseCSV(txt);
+}
+
+// -------------------- Avoid consecutive same-target (JS port) --------------------
+function avoidConsecutive(records, maxAttempts=1000){
+  if(records.length<=1) return records.slice();
+  // quick random tries
+  for(let attempt=0; attempt<maxAttempts; attempt++){
+    const arr = records.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    let ok=true;
+    for(let i=1;i<arr.length;i++){
+      if((arr[i].target||'') === (arr[i-1].target||'')) { ok=false; break; }
+    }
+    if(ok) return arr;
+  }
+
+  // fallback greedy interleave
+  const groups = {};
+  records.forEach(r=>{ const t = r.target||''; groups[t]=groups[t]||[]; groups[t].push(r); });
+  // build array of [count,target]
+  const heap = Object.keys(groups).map(k=>({k,count:groups[k].length}));
+  // sort descending by count
+  heap.sort((a,b)=>b.count-a.count);
+  const result = [];
+  let prev = null;
+  while(heap.length){
+    const cur = heap.shift();
+    const item = groups[cur.k].pop();
+    result.push(item);
+    if(prev) { heap.push(prev); prev=null; }
+    if(groups[cur.k].length>0){ prev = {k:cur.k, count: groups[cur.k].length}; heap.sort((a,b)=>b.count-a.count); }
+  }
+  // last resort: return result (may have duplicates adjacent)
+  return result;
+}
+
+function splitIntoBlocksPreservingAdjacency(records, nBlocks=2){
+  const ordered = avoidConsecutive(records);
+  const total = ordered.length;
+  const base = Math.floor(total / nBlocks);
+  const blocks = [];
+  let start=0;
+  for(let i=0;i<nBlocks;i++){
+    let end = start + base;
+    if(i===nBlocks-1) end = total;
+    blocks.push(ordered.slice(start,end));
+    start = end;
+  }
+  return blocks;
+}
+
+// -------------------- Presentation / task logic --------------------
+const screen = document.getElementById('screen');
+const setup = document.getElementById('setup');
+const instrPages = document.getElementById('instrPages');
+const instrText = document.getElementById('instrText');
+const instrNext = document.getElementById('instrNext');
+const trialScreen = document.getElementById('trialScreen');
+const fixationEl = document.getElementById('fixation');
+const wordEl = document.getElementById('word');
+const progressEl = document.getElementById('progress');
+const judgment = document.getElementById('judgment');
+const leftKeyEl = document.getElementById('leftKey');
+const rightKeyEl = document.getElementById('rightKey');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+const endScreen = document.getElementById('endScreen');
+const downloadBtn = document.getElementById('downloadBtn');
+
+let currentBlockIndex = 0;
+let currentSentenceIndex = 0;
+let currentWords = [];
+let currentTargetIndex = null;
+let currentGlobalTrial = 0;
+let blockSequence = [];
+
+// instruction pages content
+const intro_instructions = [
+  `By proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. Press Continue.`,
+  `Sentences will appear one word at a time. Press SPACE to reveal the next word. Use F and J keys for the meaningfulness judgment (or the mapping you chose). Place your thumbs on SPACE, left index on F, right index on J. Press Continue.`,
+  `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks. Press Continue to start practice.`
+];
+let instrPageIdx=0;
+
+function showInstructions(){
+  setup.classList.add('hidden');
+  instrPages.classList.remove('hidden');
+  instrPageIdx = 0; instrText.textContent = intro_instructions[instrPageIdx];
+}
+
+instrNext.addEventListener('click', ()=>{
+  instrPageIdx++;
+  if(instrPageIdx>=intro_instructions.length){ instrPages.classList.add('hidden'); startExperiment(); }
+  else instrText.textContent = intro_instructions[instrPageIdx];
+});
+
+// start: prepare blocks and then show practice
+async function startBtnClicked(){
+  participant = document.getElementById('participant').value.trim();
+  language_order = document.getElementById('language_order').value;
+  key_mapping = document.getElementById('key_mapping').value;
+  yes_key = (key_mapping === 'F_yes_J_no') ? 'f' : 'j';
+  no_key = (yes_key==='f') ? 'j' : 'f';
+  if(yes_key==='f'){ left_desc='[F] YES'; right_desc='[J] NO'; } else { left_desc='[F] NO'; right_desc='[J] YES'; }
+  leftKeyEl.textContent = left_desc; rightKeyEl.textContent = right_desc;
+  statusEl.textContent = 'Loading CSV files...';
+  try{
+    practiceStimuli = await loadCSVfile('practice_stimuli.csv');
+    stimuliPL = await loadCSVfile('stimuli_pl.csv');
+    stimuliENG = await loadCSVfile('stimuli_eng.csv');
+    // add language column if missing
+    practiceStimuli.forEach(r=> r.language = r.language || 'PRACTICE');
+    stimuliPL.forEach(r=> r.language = 'PL');
+    stimuliENG.forEach(r=> r.language = 'ENG');
+
+    // split into blocks
+    const plBlocks = splitIntoBlocksPreservingAdjacency(stimuliPL,2);
+    const engBlocks = splitIntoBlocksPreservingAdjacency(stimuliENG,2);
+
+    if(language_order==='PL_first'){
+      blockSequence = [ ['PL_Block1',plBlocks[0]], ['ENG_Block1',engBlocks[0]], ['PL_Block2',plBlocks[1]], ['ENG_Block2',engBlocks[1]] ];
+    } else {
+      blockSequence = [ ['ENG_Block1',engBlocks[0]], ['PL_Block1',plBlocks[0]], ['ENG_Block2',engBlocks[1]], ['PL_Block2',plBlocks[1]] ];
+    }
+
+    statusEl.textContent = `Loaded stimuli. PL: ${stimuliPL.length} trials, ENG: ${stimuliENG.length} trials.`;
+    // show instructions next
+    showInstructions();
+  } catch(err){
+    statusEl.textContent = 'Error loading CSVs: '+err.message;
+    console.error(err);
+  }
+}
+startBtn.addEventListener('click', startBtnClicked);
+
+// -------------------- Main experiment flow --------------------
+async function startExperiment(){
+  // run practice then experimental blocks
+  results = [];
+  currentGlobalTrial = 0;
+  // practice block: present all practice trials sequentially
+  await runBlock('Practice', practiceStimuli, true);
+  // show post-practice instructions (simple)
+  alert('Practice finished. From now on you will not receive feedback. Press OK to continue.');
+
+  for(let i=0;i<blockSequence.length;i++){
+    const [label, block] = blockSequence[i];
+    await runBlock(label, block, false);
+    if(i < blockSequence.length-1){ alert('Take a short break. Press OK to begin the next block.'); }
+  }
+  // end
+  trialScreen.classList.add('hidden');
+  endScreen.classList.remove('hidden');
+}
+
+function presentFixation(){
+  fixationEl.classList.remove('hidden');
+  wordEl.classList.add('hidden');
+}
+function hideFixation(){ fixationEl.classList.add('hidden'); wordEl.classList.remove('hidden'); }
+
+function waitForSpace(){
+  return new Promise(resolve=>{
+    function onKey(e){
+      if(e.code==='Space'){ e.preventDefault(); window.removeEventListener('keydown', onKey); resolve(performance.now()); }
+    }
+    window.addEventListener('keydown', onKey);
+  });
+}
+
+function waitForChoice(validKeys){
+  return new Promise(resolve=>{
+    function onKey(e){
+      const k = e.key.toLowerCase();
+      if(validKeys.includes(k)){ e.preventDefault(); window.removeEventListener('keydown', onKey); resolve({key:k, time:performance.now()}); }
+    }
+    window.addEventListener('keydown', onKey);
+  });
+}
+
+async function runBlock(blockName, blockArray, practice=false){
+  trialScreen.classList.remove('hidden');
+  for(let s=0;s<blockArray.length;s++){
+    const trial = blockArray[s];
+    const sentence = trial.sentence || '';
+    const words = sentence.split(/\s+/).filter(x=>x.length>0);
+    const length = words.length;
+    if(!practice) currentGlobalTrial += 1;
+    const target = trial.target || '';
+    const target_inflected = trial.target_inflection || trial.target || '';
+    const target_index = words.indexOf(target_inflected);
+
+    // show fixation and wait for space
+    presentFixation();
+    await waitForSpace();
+    hideFixation();
+
+    const wordLevelRows = [];
+
+    for(let i=0;i<words.length;i++){
+      wordEl.textContent = words[i];
+      // flip / onset time
+      const onset = performance.now();
+      // wait for space press
+      const keyEvent = await waitForSpace();
+      const rt = (keyEvent - onset);
+      // compute relative target position
+      const target_pos = (target_index>=0) ? (i - target_index) : null;
+      wordLevelRows.push({
+        condition: trial.condition || '',
+        language: trial.language || '',
+        trial: currentGlobalTrial,
+        sentence: sentence,
+        sentence_id: trial.id || '',
+        target_stereotypicality: trial.target_stereotypicality || '',
+        word: words[i],
+        word_pos: i+1,
+        target: target,
+        target_inflection: target_inflected,
+        target_pos: target_pos,
+        length: length,
+        meaningfulness: trial.meaningfulness_M || trial.meaningfulness || '',
+        probability: trial.probability_M || trial.probability || '',
+        stereotypicality: trial.stereotypicality_M || trial.stereotypicality || '',
+        rt: rt
+      });
+      // brief blank
+      wordEl.textContent = '';
+      await new Promise(r=>setTimeout(r,100));
+    }
+
+    // judgment phase: show question and wait for F/J
+    trialScreen.classList.add('hidden');
+    judgment.classList.remove('hidden');
+    // update left/right labels (buttons also available)
+    leftKeyEl.textContent = left_desc;
+    rightKeyEl.textContent = right_desc;
+
+    // wait for keypress or button
+    const choicePromise = waitForChoice([yes_key, no_key]);
+    // also allow clicking buttons
+    leftBtn.onclick = ()=>{ choicePromise.then(()=>{}); };
+    rightBtn.onclick = ()=>{ choicePromise.then(()=>{}); };
+
+    const choice = await choicePromise;
+    const pressed = choice.key;
+    const rt_judgment = choice.time; // time stamp (ms from navigation start)
+    const response = (pressed === yes_key) ? 'meaningful' : 'not_meaningful';
+
+    // accuracy: condition 'sei' is semantically incorrect (not meaningful)
+    const correct_meaning = (trial.condition !== 'sei');
+    const participant_meaning = (response === 'meaningful');
+    const accuracy = (correct_meaning === participant_meaning) ? 1 : 0;
+
+    // practice feedback
+    if(practice && trial.correct_answer){
+      alert(response === trial.correct_answer ? 'Correct!' : 'Incorrect.');
+    }
+
+    // save one row per word
+    wordLevelRows.forEach(row=>{
+      const out = Object.assign({}, row, {
+        participant_id: participant,
+        block: blockName,
+        key_mapping: key_mapping,
+        judgement_rt: rt_judgment,
+        accuracy: accuracy
+      });
+      results.push(out);
+    });
+
+    // restore UI
+    judgment.classList.add('hidden');
+    trialScreen.classList.remove('hidden');
+    progressEl.textContent = `${blockName} — sentence ${s+1} / ${blockArray.length}`;
+  }
+}
+
+// -------------------- End: download & (optional) send --------------------
+function toCSV(rows){
+  if(rows.length===0) return '';
+  const keys = Object.keys(rows[0]);
+  const header = keys.join(',') + '\n';
+  const lines = rows.map(r=> keys.map(k=> ((''+(r[k]===undefined?'':r[k])).replace(/,/g,'') ) ).join(','));
+  return header + lines.join('\n');
+}
+
+downloadBtn.addEventListener('click', ()=>{
+  const csv = toCSV(results);
+  const blob = new Blob([csv],{type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download = (participant||'participant') + '_results.csv'; a.click();
+});
+
+// -------------------- OPTIONAL: send results to a remote endpoint (Google Apps Script).
+// If you want automatic saving, set the variable `DATA_ENDPOINT` to your Apps Script URL (see comments below).
+const DATA_ENDPOINT = ''; // e.g. 'https://script.google.com/macros/s/..../exec'
+
+async function sendResults(){
+  if(!DATA_ENDPOINT) return;
+  try{
+    await fetch(DATA_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({rows:results}) });
+    console.log('Results sent');
+  } catch(err){ console.error('Failed to send results',err); }
+}
+
+// when user finishes, attempt send (if endpoint configured)
+downloadBtn.addEventListener('click', ()=>{ sendResults(); });
+
+/*
+  -------------------- Google Apps Script (server) example --------------------
+  1) Create a new Google Sheet. In Extensions -> Apps Script paste the following:
+
+  function doPost(e){
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName('Sheet1');
+    var payload = JSON.parse(e.postData.contents);
+    var rows = payload.rows; // array of objects
+    // if header row empty, write header
+    if(sheet.getLastRow() == 0){
+      var keys = Object.keys(rows[0]);
+      sheet.appendRow(keys);
+    }
+    rows.forEach(function(r){
+      var keys = Object.keys(r);
+      var vals = keys.map(function(k){ return r[k]; });
+      sheet.appendRow(vals);
+    });
+    return ContentService.createTextOutput(JSON.stringify({status:'ok'})).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  2) Deploy -> New deployment -> select "Web app" -> Execute as: "Me" -> Who has access: "Anyone" (or "Anyone, even anonymous" for truly anonymous submissions) -> Deploy -> copy URL.
+  3) Paste that URL into DATA_ENDPOINT above.
+
+  SECURITY NOTE: Using "Anyone, even anonymous" means anyone can send data to your sheet. The sheet will not reveal participants' IPs in this flow. If you need more control, use a proper backend.
+*/
+
+</script>
+</body>
+</html>

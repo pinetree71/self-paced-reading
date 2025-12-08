@@ -1,0 +1,121 @@
+﻿id,condition,target,sentence,meaningfulness_M,meaningfulness_SD,probability_M,probability_SD,stereotypicality_M,stereotypicality_SD,length,target_stereotypicality,target_sentence_position,target_inflection
+121,stc,peruka,Wnuczka lubi przymierzać peruki swojej ukochanej babci.,6.5,0.57,5.38,1.37,5.72,1.41,7,F,4,peruki
+122,stc,piekarnik,Codziennie używała wymarzonego piekarnika do pieczenia chleba.,6,1.31,5.07,1.55,5.9,1.11,7,F,4,piekarnika
+123,stc,taniec,Dziewczynę najbardziej fascynuje taniec i lekcje akrobatyki.,6.55,0.74,5.63,1.19,6.14,1.03,7,F,4,taniec
+124,stc,kuchenka,Staruszka stała przy kuchence i mieszała zupę.,6.69,0.6,6.62,0.49,6.28,1,7,F,4,kuchence
+125,stc,wstążka,Dziewczynka oszczędzała na wstążki do ozdoby włosów.,6.2,0.85,5.66,1.08,6.1,1.14,7,F,4,wstążki
+126,stc,szydełko,Kobieta kupiła sobie metalowe szydełka i kłębki wełny.,6.24,0.99,5.43,1.04,5.97,0.91,8,F,5,szydełka
+127,stc,rzęsa,Nastolatki przyczepiają sobie sztuczne rzęsy przed każdą imprezą.,5.72,1.39,5,1.56,5.63,1.19,8,F,5,rzęsy
+128,stc,usta,Ich córka balsamuje swoje usta kilka razy dziennie.,6.1,1.42,5.76,1.5,6.17,1.34,8,F,5,usta
+129,stc,jedwab,Ta nauczycielka chodzi w jedwabiu niezależnie od okazji.,6.2,1.16,4.76,1.77,5.14,1.33,8,F,5,jedwabiu
+130,stc,talia,Urzędniczce zależało na wąskiej talii i smukłej sylwetce.,6.07,1.46,5.93,1.14,6.24,1.02,8,F,5,talii
+131,stc,szminka,Te nastolatki właśnie kupiły sobie szminki w odcieniu czerwieni.,6.33,0.76,5.5,1.43,6.17,1.26,9,F,6,szminki
+132,stc,pończocha,Jej koleżanka poszła kupić sobie pończochy na sobotnią imprezę.,6.43,0.9,5.47,1.33,5.9,0.99,9,F,6,pończochy
+133,stc,sukienka,Jej siostra specjalizowała się w sukienkach wieczorowych największych gwiazd.,5.63,1.54,5.66,1.14,6.03,0.87,9,F,6,sukienkach
+134,stc,biżuteria,Młode dziewczyny godzinami oglądają najnowszą biżuterię od znanego jubilera.,6.2,1.16,5,1.46,6,1,9,F,6,biżuterię
+135,stc,fartuch,W domu zawsze chodziła w fartuchu po swojej mamie.,6.14,1.06,5.31,1.54,5.43,1.07,9,F,6,fartuchu
+136,stc,pocisk,Braci zafascynował znaleziony pocisk z czasów wojny.,6.47,0.86,6.1,1.14,5.93,1.1,7,M,4,pocisk
+137,stc,koszula,Dziadek codziennie nosi koszulę i spodnie garniturowe.,6.34,1.14,5.73,1.08,5.72,0.96,7,M,4,koszulę
+138,stc,łopata,Gospodarz kupił dwie łopaty i metalowe grabie.,6.47,0.82,6.1,0.9,5.77,0.94,7,M,4,łopaty
+139,stc,tarcza,Dziesięciolatek marzył o tarczy z herbem rycerskim.,6.62,0.56,5.86,1.43,6.07,0.78,7,M,4,tarczy
+140,stc,bitwa,Chłopcy urządzili im bitwę na placu zabaw.,6.21,1.01,5.83,0.79,6.17,0.85,7,M,4,bitwę
+141,stc,wojna,Jego bracia pasjonują się wojną i technikami samoobrony.,6.24,1.02,5.73,1.05,6.38,0.78,8,M,5,wojną
+142,stc,silnik,Mężczyzna potrafił dokładnie zaprojektować silnik tego modelu samochodu.,6.17,1.12,4.87,1.72,6.07,0.98,8,M,5,silnik
+143,stc,narzędzie,Tata pojechał kupić nowe narzędzia przed remontem kuchni.,6.52,1.02,6,1.05,6.5,0.63,8,M,5,narzędzia
+144,stc,pościg,Ten mężczyzna ruszył w pościg za niebezpiecznym złodziejem.,6.5,0.63,5.24,1.43,5.97,0.89,8,M,5,pościg
+145,stc,forsa,Mężczyźni często oczekują dużo forsy za wykonaną pracę.,5.86,1.33,5.3,1.12,5.38,1.32,8,M,5,forsy
+146,stc,piwo,Jej narzeczony codziennie pije dwa piwa po skończeniu pracy.,6.21,0.98,5.37,1.3,5.93,1,9,M,6,piwa
+147,stc,kopalnia,Ten mężczyzna pracuje fizycznie w kopalni od trzech lat.,6.34,1.01,6.1,1.59,6.5,0.73,9,M,6,kopalni
+148,stc,brzytwa,On od lat używa tradycyjnej brzytwy dla dokładnego golenia.,6.47,0.97,5.03,1.84,5.86,1.33,9,M,6,brzytwy
+149,stc,rozbój,Jego sąsiad dokonał wczoraj kolejnego rozboju na kierowcy ciężarówki.,5.27,1.8,4.55,1.94,5.17,1.63,9,M,6,rozboju
+150,stc,rusztowanie,Grupa młodych mężczyzn postawiła całe rusztowanie w cztery godziny.,6.41,0.82,5.6,1.16,6.14,1.09,9,M,6,rusztowanie
+151,sti,peruka,Wnuczek lubi przymierzać peruki swojej ukochanej babci.,5.93,1.39,4.33,1.67,1.72,0.88,7,F,4,peruki
+152,sti,piekarnik,Codziennie używał wymarzonego piekarnika do pieczenia chleba.,6.07,1.34,4.52,1.62,2.66,1.49,7,F,4,piekarnika
+153,sti,taniec,Chłopca najbardziej fascynuje taniec i lekcje akrobatyki.,6.43,0.97,4.55,1.66,2.14,1.38,7,F,4,taniec
+154,sti,kuchenka,Staruszek stał przy kuchence i mieszał zupę.,6.5,0.73,5.73,0.98,3.4,1.43,7,F,4,kuchence
+155,sti,wstążka,Chłopczyk oszczędzał na wstążki do ozdoby włosów.,5.28,2.03,3.1,1.58,1.41,0.73,7,F,4,wstążki
+156,sti,szydełko,Mężczyzna kupił sobie metalowe szydełka i kłębki wełny.,5.47,1.93,3.66,1.63,1.55,0.83,8,F,5,szydełka
+157,sti,rzęsa,Nastolatkowie przyczepiają sobie sztuczne rzęsy przed każdą imprezą.,5.37,1.4,3.4,1.81,1.55,0.87,8,F,5,rzęsy
+158,sti,usta,Ich syn balsamuje swoje usta kilka razy dziennie.,5.72,1.58,4.27,1.51,1.97,1.32,8,F,5,usta
+159,sti,jedwab,Ten nauczyciel chodzi w jedwabiu niezależnie od okazji.,5.72,1.49,4.33,1.54,2.45,1.3,8,F,5,jedwabiu
+160,sti,talia,Urzędnikowi zależało na wąskiej talii i smukłej sylwetce.,5.43,1.74,3.38,1.88,1.69,0.76,8,F,5,talii
+161,sti,szminka,Ci nastolatkowie właśnie kupili sobie szminki w odcieniu czerwieni.,5.86,1.46,3.23,1.96,1.4,0.72,9,F,6,szminki
+162,sti,pończocha,Jej kolega poszedł kupić sobie pończochy na sobotnią imprezę.,5.55,1.27,2.4,1.33,1.33,0.61,9,F,6,pończochy
+163,sti,sukienka,Jej brat specjalizował się w sukienkach wieczorowych największych gwiazd.,5.9,1.4,4.63,1.5,2.34,1.54,9,F,6,sukienkach
+164,sti,biżuteria,Młodzi chłopacy godzinami oglądają najnowszą biżuterię od znanego jubilera.,5.48,1.7,3.4,1.87,1.69,0.89,9,F,6,biżuterię
+165,sti,fartuch,W domu zawsze chodził w fartuchu po swojej mamie.,5.93,1.23,3.67,1.56,1.97,1,9,F,6,fartuchu
+166,sti,pocisk,Siostry zafascynował znaleziony pocisk z czasów wojny.,6.24,0.99,5.13,1.17,2.41,1.4,7,M,4,pocisk
+167,sti,koszula,Babcia codziennie nosi koszulę i spodnie garniturowe.,5.93,1.51,4.14,1.88,2.07,1.03,7,M,4,koszulę
+168,sti,łopata,Gospodyni kupiła dwie łopaty i metalowe grabie.,6.34,1.01,4.7,1.24,3.14,1.62,7,M,4,łopaty
+169,sti,tarcza,Dziesięciolatka marzyła o tarczy z herbem rycerskim.,6.23,1.04,3.9,1.6,2.38,1.27,7,M,4,tarczy
+170,sti,bitwa,Dziewczynki urządziły im bitwę na placu zabaw.,6.43,0.94,4.69,1.54,2.83,1.36,7,M,4,bitwę
+171,sti,wojna,Jego siostry pasjonują się wojną i technikami samoobrony.,6.3,0.75,4.9,1.63,2.1,1.03,8,M,5,wojną
+172,sti,silnik,Kobieta potrafiła dokładnie zaprojektować silnik tego modelu samochodu.,6.31,0.97,4.86,1.75,1.79,0.9,8,M,5,silnik
+173,sti,narzędzie,Mama pojechała kupić nowe narzędzia przed remontem kuchni.,6.33,0.84,4.57,1.52,2.17,0.95,8,M,5,narzędzia
+174,sti,pościg,Ta kobieta ruszyła w pościg za niebezpiecznym złodziejem.,6.34,0.81,4.23,1.38,2.03,1.27,8,M,5,pościg
+175,sti,forsa,Kobiety często oczekują dużo forsy za wykonaną pracę.,5.4,1.59,3.86,1.75,3.41,1.59,8,M,5,forsy
+176,sti,piwo,Jego narzeczona codziennie pije dwa piwa po skończeniu pracy.,6.4,0.97,4.45,1.57,1.9,0.84,9,M,6,piwa
+177,sti,kopalnia,Ta kobieta pracuje fizycznie w kopalni od trzech lat.,6.27,1.08,3.2,1.79,1.53,1.22,9,M,6,kopalni
+178,sti,brzytwa,Ona od lat używa tradycyjnej brzytwy dla dokładnego golenia.,5.69,1.42,3.6,1.92,1.86,0.95,9,M,6,brzytwy
+179,sti,rozbój,Jego sąsiadka dokonała wczoraj kolejnego rozboju na kierowcy ciężarówki.,5.24,1.7,2.4,1.43,1.57,0.82,9,M,6,rozboju
+180,sti,rusztowanie,Grupa młodych kobiet postawiła całe rusztowanie w cztery godziny.,6.1,1.27,4,1.73,1.87,1.22,9,M,6,rusztowanie
+181,sec,peruka,Wszystkie dzieci założyły peruki i zaczęły tańczyć.,6.4,0.93,5.1,1.63,3.97,0.18,7,F,4,peruki
+182,sec,piekarnik,Trzeba wreszcie naprawić piekarnik stojący w garażu.,5.9,1.24,5.52,1.5,3.93,1.6,7,F,4,piekarnik
+183,sec,taniec,Uruchomiono zapisy na taniec klasyczny i towarzyski.,6.41,0.78,6.34,0.94,4.2,0.71,7,F,4,taniec
+184,sec,kuchenka,Naczynia pozostawiono na kuchence po prawej stronie.,6.14,1.13,5.7,1.12,4,0.95,7,F,4,kuchence
+185,sec,wstążka,W pudełku były wstążki dekoracyjne do kwiatów.,6.55,0.87,5.83,1.34,4.69,1.26,7,F,4,wstążki
+186,sec,szydełko,Pracownia krawiecka zakupiła nowe szydełka i trwalsze igły.,6.48,0.78,5.83,1.21,4.3,0.65,8,F,5,szydełka
+187,sec,rzęsa,Oko chronione jest przez rzęsy i dwie powieki.,6.14,1.38,4.93,1.98,4.17,0.65,8,F,5,rzęsy
+188,sec,usta,Wielu zdenerwowanych ludzi zaciska usta w stresujących sytuacjach.,6.37,0.93,5.77,1.01,4.1,0.55,8,F,5,usta
+189,sec,jedwab,Do magazynu dotarła dostawa jedwabiu z południowej Tajlandii.,6.28,1.44,4.57,1.65,4,0,8,F,5,jedwabiu
+190,sec,talia,Kombinezon był wąski w talii i nie pasował.,6.17,1.26,6,1.54,4.3,0.79,8,F,5,talii
+191,sec,szminka,W większych drogeriach zawsze sprzedają szminki w najróżniejszych odcieniach.,6.4,0.72,6.34,0.97,4.63,0.93,9,F,6,szminki
+192,sec,pończocha,Sklep posiada w swojej kolekcji pończochy w różnych rozmiarach.,6.57,0.86,6.07,1.25,4.62,1.08,9,F,6,pończochy
+193,sec,sukienka,W magazynie modowym piszą o sukienkach na nadchodzącą wiosnę.,6.45,1.02,6.2,0.92,4.6,1,9,F,6,sukienkach
+194,sec,biżuteria,Od wczoraj obowiązuje promocja na biżuterię ze szlachetnymi kamieniami.,6.17,1.17,5.3,1.6,4.37,0.81,9,F,6,biżuterię
+195,sec,fartuch,W restauracji należy pracować w fartuchu przez cały dzień.,6.31,1.11,5.3,1.37,4.28,0.88,9,F,6,fartuchu
+196,sec,pocisk,W piwnicy znaleziono pocisk z dziewiętnastego wieku.,6.1,1.63,4.57,1.63,4.34,0.9,7,M,4,pocisk
+197,sec,koszula,Wiatr porwał czystą koszulę powieszoną na balkonie.,6.41,1.24,6.21,0.86,4.1,0.55,7,M,4,koszulę
+198,sec,łopata,Do kopania użyto łopaty z metalowym trzonkiem.,6.57,0.57,5.2,1.45,4.07,0.37,7,M,4,łopaty
+199,sec,tarcza,Strzała doleciała do tarczy z dużą prędkością.,6.57,0.86,6.14,0.92,4.55,1.06,7,M,4,tarczy
+200,sec,bitwa,Armia Napoleona zwyciężyła bitwę i świętowała sukces.,6.17,1.07,5.17,1.39,4.93,1.33,7,M,4,bitwę
+201,sec,wojna,Mieszkańcy miasta uciekli przed wojną i szukają schronienia.,6.45,0.99,6.5,0.63,4,0.95,8,M,5,wojną
+202,sec,silnik,Nowy model ma sprawniejszy silnik i wbudowaną nawigację.,6.63,0.67,6.23,0.86,4.2,0.55,8,M,5,silnik
+203,sec,narzędzie,Do zestawu dołączono niezbędne narzędzia oraz instrukcję obsługi.,6.62,0.73,6.62,0.56,4.45,1.06,8,M,5,narzędzia
+204,sec,pościg,Najtrudniejszy do wyreżyserowania był pościg na ulicach Madrytu.,6.53,0.57,5.5,1.17,4.07,0.8,8,M,5,pościg
+205,sec,forsa,Zwykle nie wystarcza im forsy do końca miesiąca.,6.52,0.74,6.38,0.86,3.8,0.76,8,M,5,forsy
+206,sec,piwo,To przedsiębiorstwo od lat waży piwa o nietuzinkowym aromacie.,6.24,0.95,5.27,1.53,4.47,0.97,9,M,6,piwa
+207,sec,kopalnia,Węgiel kamienny wydobywany jest z kopalni na Górnym Śląsku.,6.21,1.21,5.9,0.88,4.41,1.09,9,M,6,kopalni
+208,sec,brzytwa,Ważnymi akcesoriami fryzjerskimi były kiedyś brzytwy wykonane z metalu.,6.37,0.93,5.97,1.27,4.2,0.81,9,M,6,brzytwy
+209,sec,rozbój,Ten artykuł jest poświęcony opisowi rozboju z wczorajszego dnia.,6.13,1.01,5.73,1.01,4.2,0.85,9,M,6,rozboju
+210,sec,rusztowanie,Na sąsiedniej ulicy postawiono wczoraj rusztowanie dla odnawianej kamienicy.,5.9,1.18,5.66,1.61,4.62,1.08,9,M,6,rusztowanie
+211,sei,peruka,Zaparzono świeżo zmielone peruki pochodzące z Brazylii.,1.31,0.54,,,,,7,F,4,peruki
+212,sei,piekarnik,Wyprano i wyprasowano piekarnik przed świętami wielkanocnymi.,1.21,0.62,,,,,7,F,4,piekarnik
+213,sei,taniec,W bagażniku przewożono taniec o nietypowych gabarytach.,1.3,0.47,,,,,7,F,4,taniec
+214,sei,kuchenka,Wykopano dół w kuchence i ukryto skarb.,1.97,1.52,,,,,7,F,4,kuchence
+215,sei,wstążka,Dzieci skaleczyły sobie wstążki i zaczęły płakać.,1.37,0.76,,,,,7,F,4,wstążki
+216,sei,szydełko,Zostali ukarani za popełnienie szydełka i drobne kradzieże.,1.43,0.68,,,,,8,F,5,szydełka
+217,sei,rzęsa,Przed snem czytała dzieciom rzęsy o tropikalnych zwierzętach.,1.47,0.82,,,,,8,F,5,rzęsy
+218,sei,usta,Wczesną wiosną sieje się usta i warzywa strączkowe.,1.34,0.72,,,,,8,F,5,usta
+219,sei,jedwab,Podjął się przeczytania całego jedwabiu zanim skończy szkołę.,1.47,0.97,,,,,8,F,5,jedwabiu
+220,sei,talia,Sąsiad rozpoczął pracę na talii w zeszłym roku.,1.97,1.22,,,,,8,F,5,talii
+221,sei,szminka,Ta narzuta uszyta jest ze szminki z poprzedniego stulecia.,1.38,0.86,,,,,9,F,6,szminki
+222,sei,pończocha,W tych kanapkach zawsze są pończochy i dużo rzodkiewek.,1.41,0.95,,,,,9,F,6,pończochy
+223,sei,sukienka,Muzycy grali na skrzypcach i sukienkach z miejskiej filharmonii.,1.93,1.6,,,,,9,F,6,sukienkach
+224,sei,biżuteria,Dzieci raz w tygodniu podlewają biżuterię dla lepszego wzrostu.,1.37,0.96,,,,,9,F,6,biżuterię
+225,sei,fartuch,Rój pszczół osiadł w dzikim fartuchu w zagłębieniu drzewa.,2.31,2.12,,,,,9,F,6,fartuchu
+226,sei,pocisk,Klienci zjedli cały pocisk i uregulowali rachunek.,1.73,1.39,,,,,7,M,4,pocisk
+227,sei,koszula,Rodzice wybaczyli im koszulę po kilku dniach.,2.2,1.54,,,,,7,M,4,koszulę
+228,sei,łopata,Z ziaren wyrosły łopaty po dwóch miesiącach.,1.21,0.49,,,,,7,M,4,łopaty
+229,sei,tarcza,Owoce kupił w tarczy przy dworcu kolejowym.,1.83,1.18,,,,,7,M,4,tarczy
+230,sei,bitwa,Do szuflady schowała bitwę o nieregularnych kształtach.,1.28,0.53,,,,,7,M,4,bitwę
+231,sei,wojna,Zimą zawsze odśnieżali podjazd wojną i dużą łopatą.,1.3,0.47,,,,,8,M,5,wojną
+232,sei,silnik,Na apelu uczniowie zaśpiewali silnik narodowy i usiedli.,1.41,0.95,,,,,8,M,5,silnik
+233,sei,narzędzie,Na skórze wyszły jej narzędzia po poparzeniu wodą.,1.33,0.55,,,,,8,M,5,narzędzia
+234,sei,pościg,Na tej ulicy wybudowano pościg i halę sportową.,2.14,1.94,,,,,8,M,5,pościg
+235,sei,forsa,Do babeczek dodała odrobinę forsy i białej czekolady.,1.9,1.45,,,,,8,M,5,forsy
+236,sei,piwo,Tamci turyści kupili walizkę z piwa w największym rozmiarze.,1.57,0.97,,,,,9,M,6,piwa
+237,sei,kopalnia,Ta odmiana mandarynek rośnie w kopalni nad Morzem Śródziemnym.,1.83,0.79,,,,,9,M,6,kopalni
+238,sei,brzytwa,To oprogramowanie wymaga wysokiej jakości brzytwy i karty graficznej.,1.34,0.61,,,,,9,M,6,brzytwy
+239,sei,rozbój,Na obiad zamówili dużą porcję rozboju w sosie serowym.,1.52,0.83,,,,,9,M,6,rozboju
+240,sei,rusztowanie,Ich sąsiedzi gotowali dzisiaj wykwintne rusztowanie z wędzonym serem.,1.63,0.93,,,,,9,M,6,rusztowanie

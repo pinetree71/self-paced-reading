@@ -462,6 +462,7 @@ async function runBlock(blockName, blockArray, practice=false){
 	// practice feedback
 	if(practice && trial.correct_answer){
 	  const feedbackEl = document.getElementById('practiceFeedback');
+	  trialScreen.classList.remove('hidden');
 	  judgment.classList.add('hidden');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');

@@ -13,8 +13,9 @@
     .instr{font-size:20px}
     .hidden{display:none}
     .fix{font-size:48px}
-    #progress{font-size:14px;color:#ccc}
     button{font-size:18px;padding:10px 14px;margin:8px}
+	#pauseScreen {font-size: 28px; text-align: center; margin-top: 40px;}
+
   </style>
 </head>
 <body>
@@ -184,8 +185,6 @@ const progressEl = document.getElementById('progress');
 const judgment = document.getElementById('judgment');
 const leftKeyEl = document.getElementById('leftKey');
 const rightKeyEl = document.getElementById('rightKey');
-const leftBtn = document.getElementById('leftBtn');
-const rightBtn = document.getElementById('rightBtn');
 const endScreen = document.getElementById('endScreen');
 const downloadBtn = document.getElementById('downloadBtn');
 
@@ -197,12 +196,14 @@ let currentGlobalTrial = 0;
 let blockSequence = [];
 
 // instruction pages content
-const intro_instructions = [
-  `Before beginning, please read the following information.\n\n By proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. You may withdraw your consent at any time during the experiment with no consequences.\n\n Press Continue to read task instructions.`,
-  `You will now see the task instructions.\n\n Sentences will appear in the centre of the screen, in Polish and in English, one word at a time. Your task is to judge whether the sentence was meaningful by pressing ${left_desc} or ${right_desc}.\n\n Please place your thumbs on the SPACE bar, your left index finger on the F key, and your right index finger on the J key.\n\n Press Continue.`,
-  `You can reveal the next word in a sentence by pressing SPACE. Read at your natural pace and try to be as accurate as possible without slowing down.\n\n Press Continue.`,
-  `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks. Press Continue to start practice.`
-];
+function getInstructions() {
+  return [
+    `Before beginning, please read the following information.\n\nBy proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. You may withdraw your consent at any time during the experiment with no consequences.\n\nPress Continue to read task instructions.`,
+    `You will now see the task instructions.\n\nSentences will appear in the centre of the screen, in Polish and in English, one word at a time. Your task is to judge whether the sentence was meaningful by pressing ${left_desc} or ${right_desc}.\n\nPlease place your thumbs on the SPACE bar, your left index finger on F, and your right index finger on J.\n\nPress Continue.`,
+    `You can reveal the next word in a sentence by pressing SPACE. Read at your natural pace and try to be as accurate as possible without slowing down.\n\nPress Continue.`,
+    `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks. Press Continue to start practice.`
+  ];
+}
 let instrPageIdx=0;
 
 function showInstructions(){
@@ -222,15 +223,29 @@ async function startBtnClicked(){
   participant = document.getElementById('participant').value.trim();
   language_order = document.getElementById('language_order').value;
   key_mapping = document.getElementById('key_mapping').value;
+
   yes_key = (key_mapping === 'F_yes_J_no') ? 'f' : 'j';
   no_key = (yes_key==='f') ? 'j' : 'f';
-  if(yes_key==='f'){ left_desc='[F] YES'; right_desc='[J] NO'; } else { left_desc='[F] NO'; right_desc='[J] YES'; }
-  leftKeyEl.textContent = left_desc; rightKeyEl.textContent = right_desc;
+
+  if(yes_key==='f'){ 
+    left_desc='[F] YES'; 
+    right_desc='[J] NO'; 
+  } else { 
+    left_desc='[F] NO'; 
+    right_desc='[J] YES'; 
+  }
+
+  intro_instructions = getInstructions();
+
+  leftKeyEl.textContent = left_desc; 
+  rightKeyEl.textContent = right_desc;
+
   statusEl.textContent = 'Loading CSV files...';
   try{
     practiceStimuli = await loadCSVfile('practice_stimuli.csv');
     stimuliPL = await loadCSVfile('stimuli_pl.csv');
     stimuliENG = await loadCSVfile('stimuli_eng.csv');
+
     // add language column if missing
     practiceStimuli.forEach(r=> r.language = r.language || 'PRACTICE');
     stimuliPL.forEach(r=> r.language = 'PL');
@@ -247,6 +262,7 @@ async function startBtnClicked(){
     }
 
     statusEl.textContent = `Loaded stimuli. PL: ${stimuliPL.length} trials, ENG: ${stimuliENG.length} trials.`;
+
     // show instructions next
     showInstructions();
   } catch(err){
@@ -284,6 +300,7 @@ async function startExperiment(){
     await waitForSpace();
     pauseScreen.classList.add('hidden');
     trialScreen.classList.remove('hidden');
+	}
 }
   // end
   trialScreen.classList.add('hidden');
@@ -366,57 +383,59 @@ async function runBlock(blockName, blockArray, practice=false){
       await new Promise(r=>setTimeout(r,100));
     }
 
-    // judgment phase: show question and wait for F/J
-    trialScreen.classList.add('hidden');
-    judgment.classList.remove('hidden');
-    // update left/right labels (buttons also available)
-    leftKeyEl.textContent = left_desc;
-    rightKeyEl.textContent = right_desc;
+    // show judgment screen
+	trialScreen.classList.add('hidden');
+	judgment.classList.remove('hidden');
+	leftKeyEl.textContent = left_desc;
+	rightKeyEl.textContent = right_desc;
 
-    // wait for keypress or button
-    const choicePromise = waitForChoice([yes_key, no_key]);
+	// record onset of judgment screen
+	const judgementOnset = performance.now();
 
-    const choice = await choicePromise;
-    const pressed = choice.key;
-    const rt_judgment = choice.time; // time stamp (ms from navigation start)
-    const response = (pressed === yes_key) ? 'meaningful' : 'not_meaningful';
+	// wait for participant response
+	const choice = await waitForChoice([yes_key, no_key]);
+	const pressed = choice.key;
+	const rt_judgment = choice.time - judgementOnset; // relative RT
 
-    // accuracy: condition 'sei' is semantically incorrect (not meaningful)
-    const correct_meaning = (trial.condition !== 'sei');
-    const participant_meaning = (response === 'meaningful');
-    const accuracy = (correct_meaning === participant_meaning) ? 1 : 0;
+	// convert key to response
+	const response = (pressed === yes_key) ? 'meaningful' : 'not_meaningful';
 
-    // practice feedback
-    if(practice && trial.correct_answer){
-		const feedbackEl = document.getElementById('practiceFeedback');
-		feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
-		feedbackEl.classList.remove('hidden');  // show feedback
+	// compute accuracy
+	const correct_meaning = (trial.condition !== 'sei'); // 'sei' = semantically incorrect
+	const participant_meaning = (response === 'meaningful');
+	const accuracy = (correct_meaning === participant_meaning) ? 1 : 0;
 
-		// ensure trialScreen stays visible while showing feedback
-		trialScreen.classList.remove('hidden');
+	// practice feedback
+	if(practice && trial.correct_answer){
+	  const feedbackEl = document.getElementById('practiceFeedback');
+	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
+	  feedbackEl.classList.remove('hidden');  // show feedback
 
-		// wait for 1 second
-		await new Promise(resolve => setTimeout(resolve, 1000));
+	  // keep trialScreen visible while showing feedback
+	  trialScreen.classList.remove('hidden');
 
-		feedbackEl.classList.add('hidden');  // hide after 1 second
-}
+	  // wait for 1 second
+	  await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // save one row per word
-    wordLevelRows.forEach(row=>{
-      const out = Object.assign({}, row, {
-        participant_id: participant,
-        block: blockName,
-        key_mapping: key_mapping,
-        judgement_rt: rt_judgment,
-        accuracy: accuracy
-      });
-      results.push(out);
-    });
+	  feedbackEl.classList.add('hidden');  // hide after 1 second
+	}
 
-    // restore UI
-    judgment.classList.add('hidden');
-    trialScreen.classList.remove('hidden');
-      }
+	// save one row per word with judgment info
+	wordLevelRows.forEach(row => {
+	  const out = Object.assign({}, row, {
+		participant_id: participant,
+		block: blockName,
+		key_mapping: key_mapping,
+		judgement_rt: rt_judgment,
+		accuracy: accuracy
+	  });
+	  results.push(out);
+	});
+
+	// hide judgment screen for next trial
+	judgment.classList.add('hidden');
+	trialScreen.classList.remove('hidden');
+	}
 }
 
 // -------------------- End: download & (optional) send --------------------

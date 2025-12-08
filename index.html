@@ -19,7 +19,7 @@
 <body>
   <div id="screen">
     <div id="setup" class="big">
-      <div class="instr">Welcome to the experiment! Please contact the researcher to receive your participant ID .</div>
+      <div class="instr">Welcome to the experiment! Please contact the researcher to receive your participant ID.</div>
       <div style="margin-top:18px;text-align:left">
         <label>Participant ID: <input id="participant" type="text" autocomplete="off"></label><br>
       </div>
@@ -207,7 +207,7 @@ function getInstructions() {
     `Before beginning, please read the following information.\n\nBy proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. You may withdraw your consent at any time during the experiment with no consequences.\n\nPress SPACE to continue.`,
     `You will now see the task instructions.\n\nSentences will appear in the centre of the screen, in Polish and in English, one word at a time. Your task is to judge whether the sentence was meaningful by pressing ${left_desc} or ${right_desc}.\n\nPlease place your thumbs on the SPACE bar, your left index finger on F, and your right index finger on J.\n\nPress SPACE to continue.`,
     `You can reveal the next word in a sentence by pressing SPACE. Read at your natural pace and try to be as accurate as possible without slowing down.\n\nPress SPACE to continue.`,
-    `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks. Press SPACE to start practice.`
+    `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks.\n\nPress SPACE to start practice.`
   ];
 }
 let instrPageIdx=0;
@@ -464,6 +464,8 @@ async function runBlock(blockName, blockArray, practice=false){
 	  const feedbackEl = document.getElementById('practiceFeedback');
 	  trialScreen.classList.remove('hidden');
 	  judgment.classList.add('hidden');
+	  wordEl.textContent = '';
+	  fixationEl.classList.add('hidden');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');
 	  await new Promise(resolve => setTimeout(resolve, 1000));

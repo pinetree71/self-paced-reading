@@ -1,4 +1,3 @@
-<!-- Code will be inserted and updated in subsequent step -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,20 +9,19 @@
     #screen{max-width:1000px;padding:24px;text-align:center}
     .big{font-size:36px;line-height:1.4}
     .word{font-size:48px;margin:40px 0}
-    .instr{font-size:20px}
+    .instr{font-size:38px;white-space:pre-wrap;}
     .hidden{display:none}
     .fix{font-size:48px}
     button{font-size:18px;padding:10px 14px;margin:8px}
-	#pauseScreen {font-size: 28px; text-align: center; margin-top: 40px;}
 
   </style>
 </head>
 <body>
   <div id="screen">
     <div id="setup" class="big">
-      <div class="instr">Self-paced reading experiment (web version)</div>
+      <div class="instr">Welcome to the experiment! Please contact the researcher to receive your participant ID .</div>
       <div style="margin-top:18px;text-align:left">
-        <label>Participant ID (optional): <input id="participant" type="text"></label><br>
+        <label>Participant ID: <input id="participant" type="text" autocomplete="off"></label><br>
         <label>Language order: 
           <select id="language_order">
             <option value="PL_first">PL first</option>
@@ -172,6 +170,27 @@ function splitIntoBlocksPreservingAdjacency(records, nBlocks=2){
   return blocks;
 }
 
+// -------------------- ID validation ----------------------
+function validateParticipantID(id){
+    const regex = /^[a-z0-9]{5}$/;
+    return regex.test(id);
+}
+
+const participantDB = {
+  "71k4f":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
+  "i8llx":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
+  "rjgqs":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
+  "lf5bu":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" },
+  "bgwgu":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
+  "ihrwz":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
+  "9vasm":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
+  "u9hzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" },
+  "jtw1q":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
+  "yp6ji":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
+  "4jxjt":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
+  "f4xzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" }
+};
+
 // -------------------- Presentation / task logic --------------------
 const screen = document.getElementById('screen');
 const setup = document.getElementById('setup');
@@ -194,6 +213,7 @@ let currentWords = [];
 let currentTargetIndex = null;
 let currentGlobalTrial = 0;
 let blockSequence = [];
+let intro_instructions = [];
 
 // instruction pages content
 function getInstructions() {
@@ -212,6 +232,25 @@ function showInstructions(){
   instrPageIdx = 0; instrText.textContent = intro_instructions[instrPageIdx];
 }
 
+function updateKeyMapping() {
+  yes_key = (key_mapping === 'F_yes_J_no') ? 'f' : 'j';
+  no_key = (yes_key === 'f') ? 'j' : 'f';
+
+  if (yes_key === 'f') { 
+    left_desc = '[F] YES'; 
+    right_desc = '[J] NO'; 
+  } else { 
+    left_desc = '[F] NO'; 
+    right_desc = '[J] YES'; 
+  }
+
+  // Update the instruction display elements if they exist
+  if (leftKeyEl && rightKeyEl) {
+    leftKeyEl.textContent = left_desc;
+    rightKeyEl.textContent = right_desc;
+  }
+}
+
 instrNext.addEventListener('click', ()=>{
   instrPageIdx++;
   if(instrPageIdx>=intro_instructions.length){ instrPages.classList.add('hidden'); startExperiment(); }
@@ -221,26 +260,36 @@ instrNext.addEventListener('click', ()=>{
 // start: prepare blocks and then show practice
 async function startBtnClicked(){
   participant = document.getElementById('participant').value.trim();
-  language_order = document.getElementById('language_order').value;
-  key_mapping = document.getElementById('key_mapping').value;
 
-  yes_key = (key_mapping === 'F_yes_J_no') ? 'f' : 'j';
-  no_key = (yes_key==='f') ? 'j' : 'f';
-
-  if(yes_key==='f'){ 
-    left_desc='[F] YES'; 
-    right_desc='[J] NO'; 
-  } else { 
-    left_desc='[F] NO'; 
-    right_desc='[J] YES'; 
+  // Validate participant ID
+  if(!validateParticipantID(participant)){
+    alert("Participant ID is invalid.");
+    return; // stop experiment if invalid
   }
+
+  // Load participant-specific options if ID is in the database
+	if (participantDB[participant]) {
+	  language_order = participantDB[participant].language_order;
+	  key_mapping = participantDB[participant].key_mapping;
+
+	  // update the dropdowns visually
+	  document.getElementById('language_order').value = language_order;
+	  document.getElementById('key_mapping').value = key_mapping;
+	} else {
+	  // if not in database, use dropdown values
+	  language_order = document.getElementById('language_order').value;
+	  key_mapping = document.getElementById('key_mapping').value;
+	}
+
+	// Update yes/no keys and labels
+	updateKeyMapping();
 
   intro_instructions = getInstructions();
 
   leftKeyEl.textContent = left_desc; 
   rightKeyEl.textContent = right_desc;
 
-  statusEl.textContent = 'Loading CSV files...';
+  statusEl.textContent = 'Loading...';
   try{
     practiceStimuli = await loadCSVfile('practice_stimuli.csv');
     stimuliPL = await loadCSVfile('stimuli_pl.csv');
@@ -409,15 +458,11 @@ async function runBlock(blockName, blockArray, practice=false){
 	if(practice && trial.correct_answer){
 	  const feedbackEl = document.getElementById('practiceFeedback');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
-	  feedbackEl.classList.remove('hidden');  // show feedback
-
-	  // keep trialScreen visible while showing feedback
-	  trialScreen.classList.remove('hidden');
-
-	  // wait for 1 second
+	  feedbackEl.classList.remove('hidden');
+	  trialScreen.classList.add('hidden'); // hide trial screen while feedback shows
 	  await new Promise(resolve => setTimeout(resolve, 1000));
-
-	  feedbackEl.classList.add('hidden');  // hide after 1 second
+	  feedbackEl.classList.add('hidden');
+	  trialScreen.classList.remove('hidden'); // restore trial screen
 	}
 
 	// save one row per word with judgment info

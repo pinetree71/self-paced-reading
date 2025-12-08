@@ -46,6 +46,10 @@
       <div style="margin-top:18px"><button id="instrNext">Continue</button></div>
     </div>
 
+	<div id="pauseScreen" class="hidden big">
+	  <div id="pauseText">Press SPACE to continue</div>
+	</div>	
+
     <div id="trialScreen" class="hidden">
       <div id="progress"></div>
       <div id="fixation" class="fix hidden">+</div>
@@ -194,8 +198,9 @@ let blockSequence = [];
 
 // instruction pages content
 const intro_instructions = [
-  `By proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. Press Continue.`,
-  `Sentences will appear one word at a time. Press SPACE to reveal the next word. Use F and J keys for the meaningfulness judgment (or the mapping you chose). Place your thumbs on SPACE, left index on F, right index on J. Press Continue.`,
+  `Before beginning, please read the following information.\n\n By proceeding, you consent to your data being recorded and analysed as part of the study. All data will be fully anonymised and cannot be traced back to you. You may withdraw your consent at any time during the experiment with no consequences.\n\n Press Continue to read task instructions.`,
+  `You will now see the task instructions.\n\n Sentences will appear in the centre of the screen, in Polish and in English, one word at a time. Your task is to judge whether the sentence was meaningful by pressing ${left_desc} or ${right_desc}.\n\n Please place your thumbs on the SPACE bar, your left index finger on the F key, and your right index finger on the J key.\n\n Press Continue.`,
+  `You can reveal the next word in a sentence by pressing SPACE. Read at your natural pace and try to be as accurate as possible without slowing down.\n\n Press Continue.`
   `You will begin with a short practice block, followed by four experimental blocks. You can take breaks between blocks. Press Continue to start practice.`
 ];
 let instrPageIdx=0;
@@ -259,13 +264,27 @@ async function startExperiment(){
   // practice block: present all practice trials sequentially
   await runBlock('Practice', practiceStimuli, true);
   // show post-practice instructions (simple)
-  alert('Practice finished. From now on you will not receive feedback. Press OK to continue.');
+  const pauseScreen = document.getElementById('pauseScreen');
+  const pauseText = document.getElementById('pauseText');
+
+  pauseText.textContent = 'You have now completed the practice block.\n\nFrom now on, you will not receive feedback on your responses.\n\nPress SPACE when you are ready to begin the next block.';
+  trialScreen.classList.add('hidden');
+  pauseScreen.classList.remove('hidden');
+  await waitForSpace();
+  pauseScreen.classList.add('hidden');
+  trialScreen.classList.remove('hidden');
 
   for(let i=0;i<blockSequence.length;i++){
     const [label, block] = blockSequence[i];
     await runBlock(label, block, false);
-    if(i < blockSequence.length-1){ alert('Take a short break. Press OK to begin the next block.'); }
-  }
+	if(i < blockSequence.length-1){ 
+    pauseText.textContent = 'That was the end of this block.\n\nYou may take a short break.\n\nPress SPACE when you are ready to begin the next block.';
+    trialScreen.classList.add('hidden');
+    pauseScreen.classList.remove('hidden');
+    await waitForSpace();
+    pauseScreen.classList.add('hidden');
+    trialScreen.classList.remove('hidden');
+}
   // end
   trialScreen.classList.add('hidden');
   endScreen.classList.remove('hidden');
@@ -369,13 +388,17 @@ async function runBlock(blockName, blockArray, practice=false){
 
     // practice feedback
     if(practice && trial.correct_answer){
-      const feedbackEl = document.getElementById('practiceFeedback');
-      feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
-      feedbackEl.classList.remove('hidden');  // show message
+		const feedbackEl = document.getElementById('practiceFeedback');
+		feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
+		feedbackEl.classList.remove('hidden');  // show feedback
 
-      await new Promise(r => setTimeout(r, 1000));  // wait 1 second
+		// ensure trialScreen stays visible while showing feedback
+		trialScreen.classList.remove('hidden');
 
-      feedbackEl.classList.add('hidden');  // hide message
+		// wait for 1 second
+		await new Promise(resolve => setTimeout(resolve, 1000));
+
+		feedbackEl.classList.add('hidden');  // hide after 1 second
 }
 
     // save one row per word

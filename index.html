@@ -23,7 +23,7 @@
       <div style="margin-top:18px;text-align:left">
         <label>Participant ID: <input id="participant" type="text" autocomplete="off"></label><br>
       </div>
-      <div style="margin-top:18px"><button id="startBtn">Start</button></div>
+      <div style="margin-top:25px"><button id="startBtn">Start</button></div>
       <div id="status" style="margin-top:12px;color:#ccc"></div>
     </div>
 
@@ -39,7 +39,7 @@
       <div id="progress"></div>
       <div id="fixation" class="fix hidden">+</div>
       <div id="word" class="word"></div>
-      <div id="practiceFeedback" class="instr hidden" style="margin-top:20px; font-size:24px;"></div>
+      <div id="practiceFeedback" class="instr hidden" style="margin-top:20px; font-size:38px;"></div>
     </div>
 
     <div id="judgment" class="hidden">
@@ -54,20 +54,6 @@
   </div>
 
 <script>
-/*
-  Web implementation of the self-paced reading task. Key features:
-    - Loads CSVs from local files in same folder
-    - Presents sentences non-cumulatively, word-by-word
-    - Records per-word RTs (from word onset) and judgment RT
-    - Splits PL/ENG into two blocks each preserving adjacency across whole sequence
-    - Avoids consecutive trials with same 'target' where possible (greedy + shuffle)
-    - Saves results in-memory; posts to an external endpoint (Google Apps Script) if configured
-
-  IMPORTANT:
-    - For accurate timing, run this on a modern browser and avoid background tabs.
-    - Place the 3 CSV files next to this HTML on GitHub Pages.
-*/
-
 // -------------------- Utility: simple CSV parser --------------------
 function parseCSV(text){
   const lines = text.trim().split(/\r?\n/);
@@ -464,7 +450,7 @@ async function runBlock(blockName, blockArray, practice=false){
 	  const feedbackEl = document.getElementById('practiceFeedback');
 	  trialScreen.classList.remove('hidden');
 	  judgment.classList.add('hidden');
-	  wordEl.textContent = '';
+	  wordEl.classList.add('hidden');
 	  fixationEl.classList.add('hidden');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');

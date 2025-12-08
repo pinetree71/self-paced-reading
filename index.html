@@ -50,12 +50,12 @@
       <div id="progress"></div>
       <div id="fixation" class="fix hidden">+</div>
       <div id="word" class="word"></div>
+      <div id="practiceFeedback" class="instr hidden" style="margin-top:20px; font-size:24px;"></div>
     </div>
 
     <div id="judgment" class="hidden">
       <div class="big">Was the sentence meaningful?</div>
       <div class="instr" style="margin-top:14px"><span id="leftKey"></span> &nbsp;&nbsp;&nbsp; <span id="rightKey"></span></div>
-      <div style="margin-top:18px"><button id="leftBtn">Left</button><button id="rightBtn">Right</button></div>
     </div>
 
     <div id="endScreen" class="hidden big">
@@ -356,9 +356,6 @@ async function runBlock(blockName, blockArray, practice=false){
 
     // wait for keypress or button
     const choicePromise = waitForChoice([yes_key, no_key]);
-    // also allow clicking buttons
-    leftBtn.onclick = ()=>{ choicePromise.then(()=>{}); };
-    rightBtn.onclick = ()=>{ choicePromise.then(()=>{}); };
 
     const choice = await choicePromise;
     const pressed = choice.key;
@@ -372,8 +369,14 @@ async function runBlock(blockName, blockArray, practice=false){
 
     // practice feedback
     if(practice && trial.correct_answer){
-      alert(response === trial.correct_answer ? 'Correct!' : 'Incorrect.');
-    }
+      const feedbackEl = document.getElementById('practiceFeedback');
+      feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
+      feedbackEl.classList.remove('hidden');  // show message
+
+      await new Promise(r => setTimeout(r, 1000));  // wait 1 second
+
+      feedbackEl.classList.add('hidden');  // hide message
+}
 
     // save one row per word
     wordLevelRows.forEach(row=>{
@@ -390,8 +393,7 @@ async function runBlock(blockName, blockArray, practice=false){
     // restore UI
     judgment.classList.add('hidden');
     trialScreen.classList.remove('hidden');
-    progressEl.textContent = `${blockName} — sentence ${s+1} / ${blockArray.length}`;
-  }
+      }
 }
 
 // -------------------- End: download & (optional) send --------------------

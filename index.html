@@ -29,7 +29,6 @@
 
     <div id="instrPages" class="hidden">
       <div id="instrText" class="instr"></div>
-      <div style="margin-top:18px"><button id="instrNext">Continue</button></div>
     </div>
 
 	<div id="pauseScreen" class="hidden big">
@@ -238,11 +237,18 @@ function updateKeyMapping() {
   }
 }
 
-instrNext.addEventListener('click', ()=>{
-  instrPageIdx++;
-  if(instrPageIdx>=intro_instructions.length){ instrPages.classList.add('hidden'); startExperiment(); }
-  else instrText.textContent = intro_instructions[instrPageIdx];
-});
+function waitForSpaceOnce(){
+  return new Promise(resolve=>{
+    function handler(e){
+      if(e.code === "Space"){
+        e.preventDefault();
+        window.removeEventListener("keydown", handler);
+        resolve();
+      }
+    }
+    window.addEventListener("keydown", handler);
+  });
+}
 
 // start: prepare blocks and then show practice
 async function startBtnClicked(){
@@ -295,12 +301,30 @@ async function startBtnClicked(){
     statusEl.textContent = `Loaded stimuli. PL: ${stimuliPL.length} trials, ENG: ${stimuliENG.length} trials.`;
 
     // show instructions next
-    showInstructions();
+    handleInstructions();
   } catch(err){
     statusEl.textContent = 'Error loading CSVs: '+err.message;
     console.error(err);
   }
 }
+
+async function handleInstructions(){
+  instrPages.classList.remove("hidden");
+  instrPageIdx = 0;
+  instrText.textContent = intro_instructions[instrPageIdx];
+
+  while(instrPageIdx < intro_instructions.length - 1){
+    await waitForSpaceOnce();
+    instrPageIdx++;
+    instrText.textContent = intro_instructions[instrPageIdx];
+  }
+
+  // after last instruction page, press SPACE to start
+  await waitForSpaceOnce();
+  instrPages.classList.add("hidden");
+  startExperiment();
+}
+
 startBtn.addEventListener('click', startBtnClicked);
 
 // -------------------- Main experiment flow --------------------
@@ -436,6 +460,7 @@ async function runBlock(blockName, blockArray, practice=false){
 	// practice feedback
 	if(practice && trial.correct_answer){
 	  const feedbackEl = document.getElementById('practiceFeedback');
+	  judgment.classList.add('hidden');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');
 	  await new Promise(resolve => setTimeout(resolve, 1000));

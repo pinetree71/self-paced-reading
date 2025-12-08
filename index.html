@@ -22,21 +22,8 @@
       <div class="instr">Welcome to the experiment! Please contact the researcher to receive your participant ID .</div>
       <div style="margin-top:18px;text-align:left">
         <label>Participant ID: <input id="participant" type="text" autocomplete="off"></label><br>
-        <label>Language order: 
-          <select id="language_order">
-            <option value="PL_first">PL first</option>
-            <option value="ENG_first">ENG first</option>
-          </select>
-        </label><br>
-        <label>Key mapping:
-          <select id="key_mapping">
-            <option value="F_yes_J_no">F = YES / J = NO</option>
-            <option value="J_yes_F_no">J = YES / F = NO</option>
-          </select>
-        </label>
       </div>
-      <div style="margin-top:18px">Make sure the CSV files <code>practice_stimuli.csv</code>, <code>stimuli_eng.csv</code> and <code>stimuli_pl.csv</code> are in the same folder as this HTML file on GitHub Pages.</div>
-      <div style="margin-top:18px"><button id="startBtn">Start (load stimuli)</button></div>
+      <div style="margin-top:18px"><button id="startBtn">Start</button></div>
       <div id="status" style="margin-top:12px;color:#ccc"></div>
     </div>
 
@@ -271,15 +258,10 @@ async function startBtnClicked(){
 	if (participantDB[participant]) {
 	  language_order = participantDB[participant].language_order;
 	  key_mapping = participantDB[participant].key_mapping;
-
-	  // update the dropdowns visually
-	  document.getElementById('language_order').value = language_order;
-	  document.getElementById('key_mapping').value = key_mapping;
 	} else {
-	  // if not in database, use dropdown values
-	  language_order = document.getElementById('language_order').value;
-	  key_mapping = document.getElementById('key_mapping').value;
-	}
+	  alert("Unknown participant ID — please contact the researcher.");
+	  return;
+}
 
 	// Update yes/no keys and labels
 	updateKeyMapping();
@@ -427,9 +409,6 @@ async function runBlock(blockName, blockArray, practice=false){
         stereotypicality: trial.stereotypicality_M || trial.stereotypicality || '',
         rt: rt
       });
-      // brief blank
-      wordEl.textContent = '';
-      await new Promise(r=>setTimeout(r,100));
     }
 
     // show judgment screen
@@ -459,10 +438,8 @@ async function runBlock(blockName, blockArray, practice=false){
 	  const feedbackEl = document.getElementById('practiceFeedback');
 	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');
-	  trialScreen.classList.add('hidden'); // hide trial screen while feedback shows
 	  await new Promise(resolve => setTimeout(resolve, 1000));
 	  feedbackEl.classList.add('hidden');
-	  trialScreen.classList.remove('hidden'); // restore trial screen
 	}
 
 	// save one row per word with judgment info

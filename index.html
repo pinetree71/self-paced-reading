@@ -51,6 +51,17 @@
       <div class="instr" style="margin-top:14px"><span id="leftKey"></span> &nbsp;&nbsp;&nbsp; <span id="rightKey"></span></div>
     </div>
 
+	<div id="finalConsentScreen" class="hidden big" style="text-align:center; padding:24px;">
+	  You have reached the end of the experiment.<br><br>
+	  After this, it will no longer be possible to withdraw your consent to participate.<br> If you want to withdraw, close this window immediately.<br><br>
+	  Press SPACE to continue.
+	  <span style="font-size:24px; color:#ccc;">Press SPACE to continue</span>
+	</div>
+	
+	<div id="savingScreen" class="hidden big" style="text-align:center; padding:24px;">
+	  Saving data... Please wait.
+	</div>
+
     <div id="endScreen" class="hidden big">
       Thank you! Experiment finished.
       <div style="margin-top:12px"><button id="downloadBtn">Download data (CSV)</button></div>
@@ -207,6 +218,25 @@ function showInstructions(){
   instrPageIdx = 0; instrText.textContent = intro_instructions[instrPageIdx];
 }
 
+async function showPause(message){
+  const pauseScreen = document.getElementById('pauseScreen');
+  const pauseText = document.getElementById('pauseText');
+  trialScreen.classList.add('hidden');
+  pauseText.textContent = message;
+  pauseScreen.classList.remove('hidden');
+  await waitForSpace();
+  pauseScreen.classList.add('hidden');
+  trialScreen.classList.remove('hidden');
+}
+
+async function showFinalConsent(){
+  const consentScreen = document.getElementById('finalConsentScreen');
+  trialScreen.classList.add('hidden');
+  consentScreen.classList.remove('hidden');
+  await waitForSpace();
+  consentScreen.classList.add('hidden');
+}
+
 function updateKeyMapping() {
   yes_key = (key_mapping === 'F_yes_J_no') ? 'f' : 'j';
   no_key = (yes_key === 'f') ? 'j' : 'f';
@@ -348,6 +378,10 @@ async function startExperiment(){
     trialScreen.classList.remove('hidden');
 	}
 }
+
+// After last block, show final consent screen
+  await showFinalConsent();
+  
   // end
   trialScreen.classList.add('hidden');
   await sendResults();
@@ -507,20 +541,25 @@ function chunkArray(arr, size) {
 const DATA_ENDPOINT = "https://script.google.com/macros/s/AKfycbzIQal-pzsxk3DBDpw-MT4T6dH1Uoh1bzeEfJRyf2YPvzzyPDaRJAN9laBa746JPZfu/exec";
 
 async function sendResults() {
+  const savingScreen = document.getElementById('savingScreen');
   const meta = participantDB[participant];
+
   if (!meta) {
     console.error("No sheet mapping found for participant", participant);
     return;
   }
 
-  const batches = chunkArray(results, 600); // about 600 rows per request
+  // Show saving screen
+  trialScreen.classList.add('hidden');
+  savingScreen.classList.remove('hidden');
 
+  const batches = chunkArray(results, 600); // about 600 rows per request
   console.log(`Uploading ${results.length} rows in ${batches.length} batches...`);
 
   for (let i = 0; i < batches.length; i++) {
     const formData = new FormData();
     formData.append('sheet_id', meta.sheet_id);
-    formData.append('batch_index', i);  // so the script knows order
+    formData.append('batch_index', i);
     formData.append('rows', JSON.stringify(batches[i]));
 
     try {
@@ -535,6 +574,9 @@ async function sendResults() {
   }
 
   console.log("All batches uploaded.");
+
+  // Hide saving screen after upload
+  savingScreen.classList.add('hidden');
 }
 
 </script>

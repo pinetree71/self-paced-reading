@@ -36,11 +36,15 @@
 	</div>	
 
     <div id="trialScreen" class="hidden">
-      <div id="progress"></div>
-      <div id="fixation" class="fix hidden">+</div>
-      <div id="word" class="word"></div>
-      <div id="practiceFeedback" class="instr hidden" style="margin-top:20px; font-size:38px;"></div>
-    </div>
+	  <div id="progress"></div>
+	  <div id="fixation" class="fix hidden">+</div>
+	  <div id="word" class="word"></div>
+	</div>
+
+	<div id="practiceFeedback" 
+		 class="instr hidden" 
+		 style="margin-top:20px; font-size:24px; text-align:center;">
+	</div>
 
     <div id="judgment" class="hidden">
       <div class="big">Was the sentence meaningful?</div>
@@ -149,18 +153,18 @@ function validateParticipantID(id){
 }
 
 const participantDB = {
-  "71k4f":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
-  "i8llx":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
-  "rjgqs":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
-  "lf5bu":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" },
-  "bgwgu":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
-  "ihrwz":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
-  "9vasm":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
-  "u9hzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" },
-  "jtw1q":  { language_order: "PL_first", key_mapping: "J_yes_F_no" },
-  "yp6ji":  { language_order: "PL_first", key_mapping: "F_yes_J_no" },
-  "4jxjt":  { language_order: "ENG_first", key_mapping: "J_yes_F_no" },
-  "f4xzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no" }
+  "71k4f":  { language_order: "PL_first", key_mapping: "J_yes_F_no", sheet_id: "1C4tthNJFvAs44Oijh97wUmlnuJxhH-9c1VlLYchKrrg" },
+  "i8llx":  { language_order: "PL_first", key_mapping: "F_yes_J_no", sheet_id: "1P0ItmJrml_5kVKh9Wq6SpTwExakfW3zio7BtcELRw5s" },
+  "rjgqs":  { language_order: "ENG_first", key_mapping: "J_yes_F_no", sheet_id: "1PADZG7bflCMj1CuPHWMs61jWCBQHnnjZulZggfeWJlw" },
+  "lf5bu":  { language_order: "ENG_first", key_mapping: "F_yes_J_no", sheet_id: "1kB-6UnK_rJ1WdcJOZYgi7AVc8FabncG3OCDmSz4YYbk" },
+  "bgwgu":  { language_order: "PL_first", key_mapping: "J_yes_F_no", sheet_id: "1CtFdJrw3QJSASv95q0zPSIPe7Z5nZ5V3pf6Pu13V3GU" },
+  "ihrwz":  { language_order: "PL_first", key_mapping: "F_yes_J_no", sheet_id: "199zJ7trScnoUIsY-tTlSr1pmKbrnRitnH7Qjz4ElQAI" },
+  "9vasm":  { language_order: "ENG_first", key_mapping: "J_yes_F_no", sheet_id: "1EJH_qibtZ8ECMOZR2VXeZomwZ-XcSlJPABSX-waTptI" },
+  "u9hzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no", sheet_id: "1X0DU1-s7uAUaULIuGXLOQkAMatbrCWeLiCwtUNyyGcY" },
+  "jtw1q":  { language_order: "PL_first", key_mapping: "J_yes_F_no", sheet_id: "19EHAKHS-yS0rHdd4LK9B63zuWbIEpOJvP6N52dRPlb4" },
+  "yp6ji":  { language_order: "PL_first", key_mapping: "F_yes_J_no", sheet_id: "1-I3vrIz8USc6zyxHBg8xOKVn9GVaSTQfZA-RfDYeBhk" },
+  "4jxjt":  { language_order: "ENG_first", key_mapping: "J_yes_F_no", sheet_id: "1ppZKyC9iU5RAwH3Jn0CzBfgDz-Hm8lvdqTYJezBRKL8" },
+  "f4xzp":  { language_order: "ENG_first", key_mapping: "F_yes_J_no", sheet_id: "1xdMTUIatHMXutWVY3k1myFPP3lIad6GmlaveHDSncek" }
 };
 
 // -------------------- Presentation / task logic --------------------
@@ -168,7 +172,6 @@ const screen = document.getElementById('screen');
 const setup = document.getElementById('setup');
 const instrPages = document.getElementById('instrPages');
 const instrText = document.getElementById('instrText');
-const instrNext = document.getElementById('instrNext');
 const trialScreen = document.getElementById('trialScreen');
 const fixationEl = document.getElementById('fixation');
 const wordEl = document.getElementById('word');
@@ -347,6 +350,7 @@ async function startExperiment(){
 }
   // end
   trialScreen.classList.add('hidden');
+  await sendResults();
   endScreen.classList.remove('hidden');
 }
 
@@ -446,17 +450,16 @@ async function runBlock(blockName, blockArray, practice=false){
 	const accuracy = (correct_meaning === participant_meaning) ? 1 : 0;
 
 	// practice feedback
-	if(practice && trial.correct_answer){
+	if (practice && trial.correct_answer) {
 	  const feedbackEl = document.getElementById('practiceFeedback');
-	  trialScreen.classList.remove('hidden');
+	  trialScreen.classList.add('hidden');
 	  judgment.classList.add('hidden');
-	  wordEl.classList.add('hidden');
-	  fixationEl.classList.add('hidden');
-	  feedbackEl.textContent = (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
+	  feedbackEl.textContent = 
+		  (response === trial.correct_answer) ? 'Correct!' : 'Incorrect.';
 	  feedbackEl.classList.remove('hidden');
 	  await new Promise(resolve => setTimeout(resolve, 1000));
 	  feedbackEl.classList.add('hidden');
-	}
+}
 
 	// save one row per word with judgment info
 	wordLevelRows.forEach(row => {
@@ -492,48 +495,35 @@ downloadBtn.addEventListener('click', ()=>{
   const a = document.createElement('a'); a.href=url; a.download = (participant||'participant') + '_results.csv'; a.click();
 });
 
-// -------------------- OPTIONAL: send results to a remote endpoint (Google Apps Script).
-// If you want automatic saving, set the variable `DATA_ENDPOINT` to your Apps Script URL (see comments below).
-const DATA_ENDPOINT = ''; // e.g. 'https://script.google.com/macros/s/..../exec'
+// -------------------- send results to a remote endpoint --------------------
+const DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwjJhALOBYzsPxvPpUifz6jVLOUJVqTZGC4zRODWqt-I35nZ-NlJPYvuLbWP-IlMa9S-g/exec';
 
-async function sendResults(){
-  if(!DATA_ENDPOINT) return;
-  try{
-    await fetch(DATA_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({rows:results}) });
-    console.log('Results sent');
-  } catch(err){ console.error('Failed to send results',err); }
-}
+async function sendResults() {
+  if (!DATA_ENDPOINT) return;
 
-// when user finishes, attempt send (if endpoint configured)
-downloadBtn.addEventListener('click', ()=>{ sendResults(); });
-
-/*
-  -------------------- Google Apps Script (server) example --------------------
-  1) Create a new Google Sheet. In Extensions -> Apps Script paste the following:
-
-  function doPost(e){
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName('Sheet1');
-    var payload = JSON.parse(e.postData.contents);
-    var rows = payload.rows; // array of objects
-    // if header row empty, write header
-    if(sheet.getLastRow() == 0){
-      var keys = Object.keys(rows[0]);
-      sheet.appendRow(keys);
-    }
-    rows.forEach(function(r){
-      var keys = Object.keys(r);
-      var vals = keys.map(function(k){ return r[k]; });
-      sheet.appendRow(vals);
-    });
-    return ContentService.createTextOutput(JSON.stringify({status:'ok'})).setMimeType(ContentService.MimeType.JSON);
+  // Retrieve the sheet for this ID
+  const meta = participantDB[participant];
+  if (!meta) {
+    console.error("No sheet mapping found for participant", participant);
+    return;
   }
 
-  2) Deploy -> New deployment -> select "Web app" -> Execute as: "Me" -> Who has access: "Anyone" (or "Anyone, even anonymous" for truly anonymous submissions) -> Deploy -> copy URL.
-  3) Paste that URL into DATA_ENDPOINT above.
+  const payload = {
+    sheet_id: meta.sheet_id,
+    rows: results
+  };
 
-  SECURITY NOTE: Using "Anyone, even anonymous" means anyone can send data to your sheet. The sheet will not reveal participants' IPs in this flow. If you need more control, use a proper backend.
-*/
+  try {
+    await fetch(DATA_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    console.log("Results sent");
+  } catch (err) {
+    console.error("Failed to send results", err);
+  }
+}
 
 </script>
 </body>

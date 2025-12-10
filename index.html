@@ -496,25 +496,45 @@ downloadBtn.addEventListener('click', ()=>{
 });
 
 // -------------------- send results to a remote endpoint --------------------
-const DATA_ENDPOINT = "https://script.google.com/macros/s/AKfycbyoKP-l5vI4HRGqO969lRQBrbQ1TK8-zadQBxa1rIlKjljpnxomfrW8TSz4QTWClrePZQ/exec";
+function chunkArray(arr, size) {
+  const chunks = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
 
-function sendResults() {
+const DATA_ENDPOINT = "https://script.google.com/macros/s/AKfycbzIQal-pzsxk3DBDpw-MT4T6dH1Uoh1bzeEfJRyf2YPvzzyPDaRJAN9laBa746JPZfu/exec";
+
+async function sendResults() {
   const meta = participantDB[participant];
   if (!meta) {
     console.error("No sheet mapping found for participant", participant);
     return;
   }
 
-  const formData = new FormData();
-  formData.append('sheet_id', meta.sheet_id);
-  formData.append('rows', JSON.stringify(results));
+  const batches = chunkArray(results, 600); // about 600 rows per request
 
-  fetch(DATA_ENDPOINT, {
-    method: 'POST',
-    body: formData // do NOT set Content-Type or mode
-  })
-  .then(() => console.log("Results sent"))
-  .catch(err => console.error("Failed to send results:", err));
+  console.log(`Uploading ${results.length} rows in ${batches.length} batches...`);
+
+  for (let i = 0; i < batches.length; i++) {
+    const formData = new FormData();
+    formData.append('sheet_id', meta.sheet_id);
+    formData.append('batch_index', i);  // so the script knows order
+    formData.append('rows', JSON.stringify(batches[i]));
+
+    try {
+      await fetch(DATA_ENDPOINT, {
+        method: 'POST',
+        body: formData
+      });
+      console.log(`Batch ${i + 1}/${batches.length} uploaded.`);
+    } catch (err) {
+      console.error(`Failed to send batch ${i + 1}:`, err);
+    }
+  }
+
+  console.log("All batches uploaded.");
 }
 
 </script>

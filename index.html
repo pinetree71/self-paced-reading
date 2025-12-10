@@ -404,7 +404,7 @@ async function runBlock(blockName, blockArray, practice=false){
       const onset = performance.now();
       // wait for space press
       const keyEvent = await waitForSpace();
-      const rt = (keyEvent - onset);
+      const rt = Number(((keyEvent - onset) / 1000).toFixed(7));
       // compute relative target position
       const target_pos = (target_index>=0) ? (i - target_index) : null;
       wordLevelRows.push({
@@ -439,7 +439,7 @@ async function runBlock(blockName, blockArray, practice=false){
 	// wait for participant response
 	const choice = await waitForChoice([yes_key, no_key]);
 	const pressed = choice.key;
-	const rt_judgment = choice.time - judgementOnset; // relative RT
+	const rt_judgment = Number(((choice.time - judgementOnset) / 1000).toFixed(7));
 
 	// convert key to response
 	const response = (pressed === yes_key) ? 'meaningful' : 'not_meaningful';

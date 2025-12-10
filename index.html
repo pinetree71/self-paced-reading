@@ -496,22 +496,13 @@ downloadBtn.addEventListener('click', ()=>{
 });
 
 // -------------------- send results to a remote endpoint --------------------
-const DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwjJhALOBYzsPxvPpUifz6jVLOUJVqTZGC4zRODWqt-I35nZ-NlJPYvuLbWP-IlMa9S-g/exec';
+const DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwnAjp-0bmJuqrZc3r6NcJ8lDugZ-AOlIW3SVL6kN4C4Q2zpJFLAZAJFkufrD18n3q_Zw/exec';
 
 async function sendResults() {
-  if (!DATA_ENDPOINT) return;
-
-  // Retrieve the sheet for this ID
   const meta = participantDB[participant];
-  if (!meta) {
-    console.error("No sheet mapping found for participant", participant);
-    return;
-  }
+  if (!meta) return;
 
-  const payload = {
-    sheet_id: meta.sheet_id,
-    rows: results
-  };
+  const payload = { sheet_id: meta.sheet_id, rows: results };
 
   try {
     await fetch(DATA_ENDPOINT, {

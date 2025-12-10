@@ -496,26 +496,37 @@ downloadBtn.addEventListener('click', ()=>{
 });
 
 // -------------------- send results to a remote endpoint --------------------
-const DATA_ENDPOINT = "https://script.google.com/macros/s/AKfycbyUxE3sWYfFsniMg-qfDTHR2bxMg5bdUTgVflJenOMQUwh2AC92lyR5xRlW1m-9HY8d-g/exec";
+const DATA_ENDPOINT = "https://script.google.com/macros/s/AKfycbwjQ_GwoXFRqAV1hnm-Ov_EXya65DMUdXbKrcrqRV4c7ruSbc1Iahl4WsHwcSzAp9oZyQ/exec";
 
-function sendResults() {
+async function sendResults() {
   const meta = participantDB[participant];
   if (!meta) {
     console.error("No sheet mapping found for participant", participant);
     return;
   }
 
-  const formData = new FormData();
-  formData.append('sheet_id', meta.sheet_id);
-  formData.append('rows', JSON.stringify(results));
+  const payload = {
+    sheet_id: meta.sheet_id,
+    rows: results
+  };
 
-  fetch(DATA_ENDPOINT, {
-    method: 'POST',
-    body: formData,
-    mode: 'no-cors' // avoids CORS preflight
-  });
+  try {
+    const response = await fetch(DATA_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-  console.log("Results sent (cannot verify success in browser).");
+    if (response.ok) {
+      console.log("Results sent successfully!");
+      const text = await response.text();
+      console.log("Server response:", text);
+    } else {
+      console.error("Error sending results:", response.status, response.statusText);
+    }
+  } catch (err) {
+    console.error("Failed to send results:", err);
+  }
 }
 
 </script>

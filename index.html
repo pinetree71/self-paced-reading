@@ -507,12 +507,11 @@ function sendResults() {
 
   const formData = new FormData();
   formData.append('sheet_id', meta.sheet_id);
-  formData.append('rows', JSON.stringify(results)); // send as string
+  formData.append('rows', JSON.stringify(results));
 
   fetch(DATA_ENDPOINT, {
     method: 'POST',
-    body: formData
-    // Note: do NOT set mode: 'no-cors'
+    body: formData // do NOT set Content-Type or mode
   })
   .then(() => console.log("Results sent"))
   .catch(err => console.error("Failed to send results:", err));

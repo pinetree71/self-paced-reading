@@ -496,24 +496,24 @@ downloadBtn.addEventListener('click', ()=>{
 });
 
 // -------------------- send results to a remote endpoint --------------------
-const DATA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPJCbXmzCPDTvi9h0jTBsQA8DF5mcOzW4oswGwzFR5kqmO0yAHK0XyB8Ge77jJy42F9A/exec';
-
-async function sendResults() {
+function sendResults() {
   const meta = participantDB[participant];
-  if (!meta) return;
-
-  const payload = { sheet_id: meta.sheet_id, rows: results };
-
-  try {
-    await fetch(DATA_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    console.log("Results sent");
-  } catch (err) {
-    console.error("Failed to send results", err);
+  if (!meta) {
+    console.error("No sheet mapping found for participant", participant);
+    return;
   }
+
+  const formData = new FormData();
+  formData.append('sheet_id', meta.sheet_id);
+  formData.append('rows', JSON.stringify(results));
+
+  fetch('https://script.google.com/macros/s/AKfycbzJtfIj60vole2JRSK96StLB8XxGUshDf4JejpdAHY5NahpT_L25kiHPeWkBNAA7j9C5Q/exec, {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors' // avoids CORS preflight
+  });
+
+  console.log("Results sent (cannot verify success in browser).");
 }
 
 </script>
